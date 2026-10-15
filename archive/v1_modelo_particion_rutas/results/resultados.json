@@ -1,0 +1,396 @@
+{
+  "xy": {
+    "1": [
+      50.0,
+      50.0
+    ],
+    "2": [
+      20.0,
+      70.0
+    ],
+    "3": [
+      30.0,
+      80.0
+    ],
+    "4": [
+      60.0,
+      75.0
+    ],
+    "5": [
+      80.0,
+      70.0
+    ],
+    "6": [
+      25.0,
+      45.0
+    ],
+    "7": [
+      40.0,
+      30.0
+    ],
+    "8": [
+      65.0,
+      25.0
+    ],
+    "9": [
+      85.0,
+      40.0
+    ],
+    "10": [
+      45.0,
+      60.0
+    ],
+    "11": [
+      70.0,
+      55.0
+    ]
+  },
+  "demanda": {
+    "1": 0,
+    "2": 12,
+    "3": 18,
+    "4": 10,
+    "5": 15,
+    "6": 14,
+    "7": 20,
+    "8": 16,
+    "9": 11,
+    "10": 13,
+    "11": 17
+  },
+  "capacidad": 50,
+  "deposito": 1,
+  "exacto": [
+    {
+      "ruta": [
+        1,
+        10,
+        1
+      ],
+      "carga": 13,
+      "distancia": 22.360679774997898,
+      "desperdicio_pct": 74.0
+    },
+    {
+      "ruta": [
+        1,
+        3,
+        2,
+        6,
+        1
+      ],
+      "carga": 44,
+      "distancia": 101.18784351429869,
+      "desperdicio_pct": 12.0
+    },
+    {
+      "ruta": [
+        1,
+        4,
+        5,
+        11,
+        1
+      ],
+      "carga": 42,
+      "distancia": 86.18463666916907,
+      "desperdicio_pct": 16.0
+    },
+    {
+      "ruta": [
+        1,
+        7,
+        8,
+        9,
+        1
+      ],
+      "carga": 47,
+      "distancia": 109.25632678936441,
+      "desperdicio_pct": 6.0
+    }
+  ],
+  "heuristica": [
+    {
+      "ruta": [
+        1,
+        11,
+        1
+      ],
+      "carga": 17,
+      "distancia": 41.23105625617661,
+      "desperdicio_pct": 66.0
+    },
+    {
+      "ruta": [
+        1,
+        3,
+        2,
+        6,
+        1
+      ],
+      "carga": 44,
+      "distancia": 101.18784351429869,
+      "desperdicio_pct": 12.0
+    },
+    {
+      "ruta": [
+        1,
+        7,
+        8,
+        1
+      ],
+      "carga": 36,
+      "distancia": 77.01053681718832,
+      "desperdicio_pct": 28.0
+    },
+    {
+      "ruta": [
+        1,
+        9,
+        5,
+        4,
+        10,
+        1
+      ],
+      "carga": 49,
+      "distancia": 119.82343354907738,
+      "desperdicio_pct": 2.0
+    }
+  ],
+  "repeticiones": [
+    {
+      "repeticion": 1,
+      "total_s": 0.03397910000057891,
+      "build_s": 0.0022374000036506914,
+      "solve_s": 0.031483699996897485,
+      "columns": 177,
+      "status": "Optimal",
+      "heuristica_s": 0.00011939999967580661,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    },
+    {
+      "repeticion": 2,
+      "total_s": 0.03338090000033844,
+      "build_s": 0.002203100004408043,
+      "solve_s": 0.030936399998608977,
+      "columns": 177,
+      "status": "Optimal",
+      "heuristica_s": 0.00012060000153724104,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    },
+    {
+      "repeticion": 3,
+      "total_s": 0.03441589999420103,
+      "build_s": 0.0022031999978935346,
+      "solve_s": 0.03196550000575371,
+      "columns": 177,
+      "status": "Optimal",
+      "heuristica_s": 0.0001292000015382655,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    },
+    {
+      "repeticion": 4,
+      "total_s": 0.035514299997885246,
+      "build_s": 0.0021437999967020005,
+      "solve_s": 0.03313660000276286,
+      "columns": 177,
+      "status": "Optimal",
+      "heuristica_s": 0.00014260000170907006,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    },
+    {
+      "repeticion": 5,
+      "total_s": 0.03526199999760138,
+      "build_s": 0.0023557999957120046,
+      "solve_s": 0.03255120000540046,
+      "columns": 177,
+      "status": "Optimal",
+      "heuristica_s": 0.0001201999984914437,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    },
+    {
+      "repeticion": 6,
+      "total_s": 0.0323936999993748,
+      "build_s": 0.002091300004394725,
+      "solve_s": 0.030070200002228376,
+      "columns": 177,
+      "status": "Optimal",
+      "heuristica_s": 0.00012170000263722613,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    },
+    {
+      "repeticion": 7,
+      "total_s": 0.035601700001279823,
+      "build_s": 0.002167300001019612,
+      "solve_s": 0.03316939999785973,
+      "columns": 177,
+      "status": "Optimal",
+      "heuristica_s": 0.0001384999995934777,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    },
+    {
+      "repeticion": 8,
+      "total_s": 0.03902389999711886,
+      "build_s": 0.002294199999596458,
+      "solve_s": 0.03648270000121556,
+      "columns": 177,
+      "status": "Optimal",
+      "heuristica_s": 0.00012309999874560162,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    },
+    {
+      "repeticion": 9,
+      "total_s": 0.03736530000605853,
+      "build_s": 0.0022158000065246597,
+      "solve_s": 0.0348907000006875,
+      "columns": 177,
+      "status": "Optimal",
+      "heuristica_s": 0.00014680000458611175,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    },
+    {
+      "repeticion": 10,
+      "total_s": 0.03311089999624528,
+      "build_s": 0.002120099998137448,
+      "solve_s": 0.03076159999909578,
+      "columns": 177,
+      "status": "Optimal",
+      "heuristica_s": 0.00012070000229869038,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    }
+  ],
+  "distancia_redondeada_sensibilidad": [
+    {
+      "ruta": [
+        1,
+        10,
+        1
+      ],
+      "carga": 13,
+      "distancia": 22,
+      "desperdicio_pct": 74.0
+    },
+    {
+      "ruta": [
+        1,
+        3,
+        2,
+        6,
+        1
+      ],
+      "carga": 44,
+      "distancia": 100,
+      "desperdicio_pct": 12.0
+    },
+    {
+      "ruta": [
+        1,
+        4,
+        5,
+        11,
+        1
+      ],
+      "carga": 42,
+      "distancia": 87,
+      "desperdicio_pct": 16.0
+    },
+    {
+      "ruta": [
+        1,
+        7,
+        8,
+        9,
+        1
+      ],
+      "carga": 47,
+      "distancia": 108,
+      "desperdicio_pct": 6.0
+    }
+  ],
+  "entorno": {
+    "python": "3.12.14",
+    "pulp": "3.3.0",
+    "sistema": "Windows-11-10.0.26300-SP0",
+    "procesador": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+    "solver": "cbc.exe incluido en PuLP 3.3.0 (ruta local omitida)"
+  },
+  "dp_verificado": true,
+  "total_s": {
+    "media": 0.03500476999906823,
+    "mediana": 0.0348389499959012,
+    "desv_est": 0.002023412192494318,
+    "min": 0.0323936999993748,
+    "max": 0.03902389999711886
+  },
+  "build_s": {
+    "media": 0.0022032000008039175,
+    "mediana": 0.0022031500011507887,
+    "desv_est": 7.968030474319602e-05,
+    "min": 0.002091300004394725,
+    "max": 0.0023557999957120046
+  },
+  "solve_s": {
+    "media": 0.03254480000105105,
+    "mediana": 0.032258350005577086,
+    "desv_est": 0.0019749153638701543,
+    "min": 0.030070200002228376,
+    "max": 0.03648270000121556
+  },
+  "heuristica_s": {
+    "media": 0.00012828000108129346,
+    "mediana": 0.00012240000069141388,
+    "desv_est": 1.0456556493436806e-05,
+    "min": 0.00011939999967580661,
+    "max": 0.00014680000458611175
+  },
+  "gap_costo_pct": 6.352367156516885,
+  "gap_tiempo_pct": -99.63353565504156,
+  "tres_rutas": [
+    {
+      "ruta": [
+        1,
+        2,
+        3,
+        11,
+        1
+      ],
+      "carga": 47,
+      "distancia": 117.98308216674216,
+      "desperdicio_pct": 6.0
+    },
+    {
+      "ruta": [
+        1,
+        6,
+        7,
+        8,
+        1
+      ],
+      "carga": 50,
+      "distancia": 101.35815804575077,
+      "desperdicio_pct": 0.0
+    },
+    {
+      "ruta": [
+        1,
+        9,
+        5,
+        4,
+        10,
+        1
+      ],
+      "carga": 49,
+      "distancia": 119.82343354907738,
+      "desperdicio_pct": 2.0
+    }
+  ]
+}

@@ -1,0 +1,416 @@
+{
+  "xy": {
+    "1": [
+      50.0,
+      50.0
+    ],
+    "2": [
+      20.0,
+      70.0
+    ],
+    "3": [
+      30.0,
+      80.0
+    ],
+    "4": [
+      60.0,
+      75.0
+    ],
+    "5": [
+      80.0,
+      70.0
+    ],
+    "6": [
+      25.0,
+      45.0
+    ],
+    "7": [
+      40.0,
+      30.0
+    ],
+    "8": [
+      65.0,
+      25.0
+    ],
+    "9": [
+      85.0,
+      40.0
+    ],
+    "10": [
+      45.0,
+      60.0
+    ],
+    "11": [
+      70.0,
+      55.0
+    ]
+  },
+  "demanda": {
+    "1": 0,
+    "2": 12,
+    "3": 18,
+    "4": 10,
+    "5": 15,
+    "6": 14,
+    "7": 20,
+    "8": 16,
+    "9": 11,
+    "10": 13,
+    "11": 17
+  },
+  "capacidad": 50,
+  "deposito": 1,
+  "exacto": [
+    {
+      "ruta": [
+        1,
+        3,
+        2,
+        6,
+        1
+      ],
+      "carga": 44,
+      "distancia": 101.18784351429869,
+      "desperdicio_pct": 12.0
+    },
+    {
+      "ruta": [
+        1,
+        4,
+        5,
+        11,
+        1
+      ],
+      "carga": 42,
+      "distancia": 86.18463666916907,
+      "desperdicio_pct": 16.0
+    },
+    {
+      "ruta": [
+        1,
+        7,
+        8,
+        9,
+        1
+      ],
+      "carga": 47,
+      "distancia": 109.25632678936441,
+      "desperdicio_pct": 6.0
+    },
+    {
+      "ruta": [
+        1,
+        10,
+        1
+      ],
+      "carga": 13,
+      "distancia": 22.360679774997898,
+      "desperdicio_pct": 74.0
+    }
+  ],
+  "heuristica": [
+    {
+      "ruta": [
+        1,
+        11,
+        1
+      ],
+      "carga": 17,
+      "distancia": 41.23105625617661,
+      "desperdicio_pct": 66.0
+    },
+    {
+      "ruta": [
+        1,
+        3,
+        2,
+        6,
+        1
+      ],
+      "carga": 44,
+      "distancia": 101.18784351429869,
+      "desperdicio_pct": 12.0
+    },
+    {
+      "ruta": [
+        1,
+        7,
+        8,
+        1
+      ],
+      "carga": 36,
+      "distancia": 77.01053681718832,
+      "desperdicio_pct": 28.0
+    },
+    {
+      "ruta": [
+        1,
+        9,
+        5,
+        4,
+        10,
+        1
+      ],
+      "carga": 49,
+      "distancia": 119.82343354907738,
+      "desperdicio_pct": 2.0
+    }
+  ],
+  "repeticiones": [
+    {
+      "repeticion": 1,
+      "total_s": 10.695791100006318,
+      "build_s": 0.05476110000745393,
+      "solve_s": 10.6404351000092,
+      "variables": 220,
+      "constraints": 1167,
+      "sec": 1013,
+      "status": "Optimal",
+      "heuristica_s": 0.0003819999983534217,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    },
+    {
+      "repeticion": 2,
+      "total_s": 10.941085400001612,
+      "build_s": 0.061753899994073436,
+      "solve_s": 10.87801989998843,
+      "variables": 220,
+      "constraints": 1167,
+      "sec": 1013,
+      "status": "Optimal",
+      "heuristica_s": 0.00037850000080652535,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    },
+    {
+      "repeticion": 3,
+      "total_s": 10.669404300002498,
+      "build_s": 0.06421080000291113,
+      "solve_s": 10.604130299994722,
+      "variables": 220,
+      "constraints": 1167,
+      "sec": 1013,
+      "status": "Optimal",
+      "heuristica_s": 0.00038779999886173755,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    },
+    {
+      "repeticion": 4,
+      "total_s": 11.119551199997659,
+      "build_s": 0.06019590000505559,
+      "solve_s": 11.058273100003134,
+      "variables": 220,
+      "constraints": 1167,
+      "sec": 1013,
+      "status": "Optimal",
+      "heuristica_s": 0.001178899998194538,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    },
+    {
+      "repeticion": 5,
+      "total_s": 10.582615899998927,
+      "build_s": 0.077871800007415,
+      "solve_s": 10.50311160000274,
+      "variables": 220,
+      "constraints": 1167,
+      "sec": 1013,
+      "status": "Optimal",
+      "heuristica_s": 0.00035849999403581023,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    },
+    {
+      "repeticion": 6,
+      "total_s": 11.114598899992416,
+      "build_s": 0.06066889999783598,
+      "solve_s": 11.052891200000886,
+      "variables": 220,
+      "constraints": 1167,
+      "sec": 1013,
+      "status": "Optimal",
+      "heuristica_s": 0.0005831000016769394,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    },
+    {
+      "repeticion": 7,
+      "total_s": 10.85561489999236,
+      "build_s": 0.06117469999298919,
+      "solve_s": 10.793360499999835,
+      "variables": 220,
+      "constraints": 1167,
+      "sec": 1013,
+      "status": "Optimal",
+      "heuristica_s": 0.0003628999984357506,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    },
+    {
+      "repeticion": 8,
+      "total_s": 11.05595650000032,
+      "build_s": 0.05555330000061076,
+      "solve_s": 10.999316899993573,
+      "variables": 220,
+      "constraints": 1167,
+      "sec": 1013,
+      "status": "Optimal",
+      "heuristica_s": 0.00033680000342428684,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    },
+    {
+      "repeticion": 9,
+      "total_s": 11.33877419999044,
+      "build_s": 0.05563429999165237,
+      "solve_s": 11.282217999993009,
+      "variables": 220,
+      "constraints": 1167,
+      "sec": 1013,
+      "status": "Optimal",
+      "heuristica_s": 0.0005449999880511314,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    },
+    {
+      "repeticion": 10,
+      "total_s": 11.327398499997798,
+      "build_s": 0.06140159998903982,
+      "solve_s": 11.265432400003192,
+      "variables": 220,
+      "constraints": 1167,
+      "sec": 1013,
+      "status": "Optimal",
+      "heuristica_s": 0.00035209998895879835,
+      "z_exacto": 318.9894867478301,
+      "z_heuristica": 339.252870136741
+    }
+  ],
+  "distancia_redondeada_sensibilidad": [
+    {
+      "ruta": [
+        1,
+        3,
+        2,
+        6,
+        1
+      ],
+      "carga": 44,
+      "distancia": 100,
+      "desperdicio_pct": 12.0
+    },
+    {
+      "ruta": [
+        1,
+        9,
+        8,
+        7,
+        1
+      ],
+      "carga": 47,
+      "distancia": 108,
+      "desperdicio_pct": 6.0
+    },
+    {
+      "ruta": [
+        1,
+        10,
+        1
+      ],
+      "carga": 13,
+      "distancia": 22,
+      "desperdicio_pct": 74.0
+    },
+    {
+      "ruta": [
+        1,
+        11,
+        5,
+        4,
+        1
+      ],
+      "carga": 42,
+      "distancia": 87,
+      "desperdicio_pct": 16.0
+    }
+  ],
+  "entorno": {
+    "python": "3.12.14",
+    "pulp": "3.3.0",
+    "sistema": "Windows-11-10.0.26300-SP0",
+    "procesador": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+    "solver": "cbc.exe incluido en PuLP 3.3.0 (ruta local omitida)"
+  },
+  "dp_verificado": true,
+  "tres_rutas": [
+    {
+      "ruta": [
+        1,
+        3,
+        5,
+        11,
+        1
+      ],
+      "carga": 50,
+      "distancia": 125.68899239597599,
+      "desperdicio_pct": 0.0
+    },
+    {
+      "ruta": [
+        1,
+        4,
+        10,
+        2,
+        6,
+        1
+      ],
+      "carga": 49,
+      "distancia": 126.05504664286931,
+      "desperdicio_pct": 2.0
+    },
+    {
+      "ruta": [
+        1,
+        9,
+        8,
+        7,
+        1
+      ],
+      "carga": 47,
+      "distancia": 109.25632678936441,
+      "desperdicio_pct": 6.0
+    }
+  ],
+  "total_s": {
+    "media": 10.970079089998034,
+    "mediana": 10.998520950000966,
+    "desv_est": 0.2674832706798372,
+    "min": 10.582615899998927,
+    "max": 11.33877419999044
+  },
+  "build_s": {
+    "media": 0.06132262999890372,
+    "mediana": 0.060921799995412584,
+    "desv_est": 0.0066065917706821875,
+    "min": 0.05476110000745393,
+    "max": 0.077871800007415
+  },
+  "solve_s": {
+    "media": 10.907718899998873,
+    "mediana": 10.938668399991002,
+    "desv_est": 0.2711321716766988,
+    "min": 10.50311160000274,
+    "max": 11.282217999993009
+  },
+  "heuristica_s": {
+    "media": 0.0004865599970798939,
+    "mediana": 0.0003802499995799735,
+    "desv_est": 0.0002574731668176629,
+    "min": 0.00033680000342428684,
+    "max": 0.001178899998194538
+  },
+  "gap_costo_pct": 6.352367156516885,
+  "gap_tiempo_pct": -99.99556466281521
+}

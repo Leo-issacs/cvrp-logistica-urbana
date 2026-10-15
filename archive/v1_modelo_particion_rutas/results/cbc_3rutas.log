@@ -1,0 +1,47 @@
+Welcome to the CBC MILP Solver 
+Version: 2.10.3 
+Build Date: Dec 15 2019 
+
+command line - <ruta-local> <ruta-local> -ratio 0 -allow 0 -threads 0 -timeMode elapsed -branch -printingOptions all -solution <ruta-local> (default strategy 1)
+At line 2 NAME          MODEL
+At line 3 ROWS
+At line 16 COLUMNS
+At line 1203 RHS
+At line 1215 BOUNDS
+At line 1393 ENDATA
+Problem MODEL has 11 rows, 177 columns and 655 elements
+Coin0008I MODEL read with 0 errors
+ratioGap was changed from 0 to 0
+allowableGap was changed from 1e-10 to 0
+Option for timeMode changed from cpu to elapsed
+Continuous objective value is 339.165 - 0.00 seconds
+Cgl0004I processed model has 11 rows, 177 columns (177 integer (177 of which binary)) and 655 elements
+Cbc0038I Initial state - 0 integers unsatisfied sum - 0
+Cbc0038I Solution found of 339.165
+Cbc0038I Before mini branch and bound, 177 integers at bound fixed and 0 continuous
+Cbc0038I Mini branch and bound did not improve solution (0.00 seconds)
+Cbc0038I After 0.00 seconds - Feasibility pump exiting with objective of 339.165 - took 0.00 seconds
+Cbc0012I Integer solution of 339.16467 found by feasibility pump after 0 iterations and 0 nodes (0.00 seconds)
+Cbc0001I Search completed - best objective 339.1646737616, took 0 iterations and 0 nodes (0.00 seconds)
+Cbc0035I Maximum depth 0, 166 variables fixed on reduced cost
+Cuts at root node changed objective from 339.165 to 339.165
+Probing was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Gomory was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Knapsack was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+Clique was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+MixedIntegerRounding2 was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+FlowCover was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+TwoMirCuts was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+ZeroHalf was tried 0 times and created 0 cuts of which 0 were active after adding rounds of cuts (0.000 seconds)
+
+Result - Optimal solution found
+
+Objective value:                339.16467376
+Enumerated nodes:               0
+Total iterations:               0
+Time (CPU seconds):             0.01
+Time (Wallclock seconds):       0.00
+
+Option for printingOptions changed from normal to all
+Total time (CPU seconds):       0.01   (Wallclock seconds):       0.01
+

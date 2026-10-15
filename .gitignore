@@ -1,0 +1,15 @@
+# Entornos y cachés
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# Temporales de PuLP/CBC y del sistema
+tmp/
+*-pulp.mps
+*-pulp.sol
+*.lp
+.DS_Store
+Thumbs.db
+# Nuevas ejecuciones locales (la evidencia versionada vive en results/ y results/reproduccion_*)
+results/local_*/

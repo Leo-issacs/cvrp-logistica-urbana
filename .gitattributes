@@ -1,0 +1,7 @@
+* text=auto eol=lf
+*.png binary
+*.docx binary
+# La evidencia se conserva byte a byte
+results/** -text
+archive/** -text
+data/** -text
