@@ -16,7 +16,7 @@ Contraste de las cifras de referencia de la revisión del 15 de octubre de 2026 
 
 ## 2. Contradicción encontrada: escenario de tres rutas
 
-**Qué dice el informe vigente.** La sección de flota mínima afirma que «el modelo de arcos y carga con *m* = 3 encontró una solución factible y óptima para esa flota: Z₃ = 339.164674» y la Figura 3 muestra rutas con cargas 47, 50 y 49.
+**Qué decía el informe antes de la corrección.** La sección de flota mínima afirmaba que «el modelo de arcos y carga con *m* = 3 encontró una solución factible y óptima para esa flota: Z₃ = 339.164674» y la Figura 3 mostraba rutas con cargas 47, 50 y 49. La atribución se corrigió el 15 de octubre de 2026; las rutas y el valor certificado se mantienen.
 
 **Qué muestra la evidencia de la revisión.**
 
@@ -35,7 +35,7 @@ Contraste de las cifras de referencia de la revisión del 15 de octubre de 2026 
 - `results/` conserva **sin cambios** la evidencia histórica, incluido el 361.0004 equivocado; el verificador lo señala como aviso.
 - `figures/rutas_tres.png` muestra la solución óptima de tres rutas (339.1647), no el incumbente.
 
-**Pendiente (fuera del alcance de este repositorio).** Reescribir en el informe la frase «el modelo de arcos y carga con *m* = 3 encontró una solución … óptima» para atribuir Z₃ a la certificación por particiones. No se editó el documento compartido ni el DOCX.
+**Corrección del informe completada el 15 de octubre de 2026.** Se corrigió el Google Doc y se actualizó `docs/Reto_CVRP_revisado.docx` desde una exportación nueva. La sección 6.2 distingue el incumbente histórico de 361.000366 del óptimo certificado de 339.164674. La Tabla 6, la Figura 3 y las conclusiones atribuyen ese óptimo a la programación dinámica por particiones y al registro del modelo anterior. El anexo contiene el control de `sol_status`, la función `particion_optima` y la separación entre incumbente y óptimo demostrado. Los promedios de tiempo se identifican como mediciones históricas del caso sin flota fija; el escenario de tres rutas no forma parte de ellos. Se conservó la portada y no se reincorporó el anexo B.
 
 ## 3. Mediciones históricas frente a una nueva ejecución
 
@@ -52,7 +52,7 @@ Los **resultados** (rutas, distancias, GAP) se reproducen exactamente; los **tie
 
 ## 4. Otras observaciones
 
-- **Numeración de rutas.** La figura de la solución exacta del modelo anterior (`archive/v1_modelo_particion_rutas/results/rutas_exactas.png`) numera las rutas con otro orden que `figures/rutas_exactas.png` (orden del modelo de arcos). Es la misma solución con rutas renumeradas; en las tablas y figuras vigentes se usa la numeración del modelo de arcos.
+- **Numeración de rutas.** El informe conserva la orientación y numeración representativas de sus tablas y figuras originales. `figures/rutas_exactas.png` usa el orden del modelo de arcos, que puede ser diferente. Los conjuntos de clientes y recorridos son equivalentes; los identificadores R1–R4 son etiquetas locales de cada presentación y no vehículos distintos.
 - **Comparación de tiempos.** La figura `comparacion.png` de la versión anterior mostraba 35.005 ms (exacto, modelo por partición) frente a 0.128 ms; la vigente muestra 10 970 ms (modelo de arcos) frente a 0.487 ms. **No se pueden mezclar:** son formulaciones distintas. Solo se versionó la vigente.
 - **Anexo B:** no existe en la revisión vigente y no se reincorporó.
-- **Documento compartido:** no se consultó la versión en línea de Google Docs; el contraste se hizo con su exportación DOCX del 15/10/2026.
+- **Documento compartido:** se revisó y corrigió la versión en línea; se comprobó su exportación posterior en DOCX y PDF. La portada se comparó con la copia previa, tanto en texto como visualmente.

@@ -105,15 +105,15 @@ Salidas de cada ejecución: `resultados.json`, `mediciones.csv`, `matriz_costos.
 | [`archive/`](archive/README.md) | Modelo anterior y script original de la revisión |
 | [`ATRIBUCIONES.md`](ATRIBUCIONES.md) | Material de terceros y licencias |
 
-Cada tabla y figura del informe se rastrea a su fuente en [`docs/inventario.md`](docs/inventario.md): las mediciones salen de `results/mediciones.csv`, las rutas de `results/resultados.json` y la figura de comparación de ambos.
+Cada tabla y figura del informe se rastrea a su fuente en [`docs/inventario.md`](docs/inventario.md): las mediciones salen de `results/mediciones.csv` y las soluciones del caso principal y de la heurística de `results/resultados.json`. La Tabla 6 y la Figura 3 muestran el óptimo de tres rutas certificado por particiones y respaldado por el registro del modelo anterior; el campo histórico `tres_rutas` contiene otro incumbente y no es su fuente.
 
 ## Estado de la verificación
 
 **Comprobado** (`src/verificar_resultados.py` sobre `results/`, 26 comprobaciones; sobre la reejecución, 27): cada cliente se atiende una vez, rutas desde y hacia el depósito, carga ≤ 50, distancias recomputadas desde la instancia, GAP, matriz sin redondeo, diez registros CBC con óptimo y certificación independiente por programación dinámica (318.9895 con cuatro rutas, 339.1647 con tres).
 
-**Hallazgo corregido:** el informe atribuye 339.1647 al modelo de arcos con tres rutas, pero ese registro de CBC terminó por tiempo en 361.0004 sin probar optimalidad. El valor es correcto y está certificado por otro método; la redacción del informe sigue pendiente. [Análisis completo](docs/coherencia.md).
+**Hallazgo corregido:** el registro histórico del modelo de arcos con tres rutas terminó por tiempo en 361.0004 sin probar optimalidad. El informe compartido y su copia DOCX ya atribuyen 339.1647 a la certificación por particiones, coincidente con el modelo anterior. Se corrigieron la sección 6.2, la procedencia de la Tabla 6 y la Figura 3, las conclusiones y el anexo de código; se conservaron las mediciones históricas. [Análisis completo](docs/coherencia.md).
 
-**No verificado:** los tiempos en otro equipo; la causa de la diferencia entre 10.97 s y 5.42 s; el contenido actual del Google Doc (se usó su exportación DOCX); la ejecución del código del modelo anterior (`archive/`). El repositorio no usa integración continua ni muestra insignias de pruebas.
+**No verificado:** los tiempos en otro equipo; la causa de la diferencia entre 10.97 s y 5.42 s; una nueva ejecución del código del modelo anterior (`archive/`). Su registro histórico sí fue revisado. El Google Doc se corrigió y se exportó nuevamente para comprobar su contenido y conservar la portada. El repositorio no usa integración continua ni muestra insignias de pruebas.
 
 ## Limitaciones
 

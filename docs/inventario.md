@@ -21,7 +21,7 @@ Rutas relativas al directorio de trabajo original (`work/…`, `outputs/…`), q
 | `figures/rutas_tres.png` | `Regenerada con src/generar_figuras.py` | Figura de la solución óptima con 3 rutas | Sustituye a la copia del modelo anterior; mismo contenido (339.1647). |
 | `figures/comparacion.png` | `work/cvrp_revision/assets/comparacion_actualizada.png` | Distancia y tiempo medio, modelo de arcos vs heurística | Versión vigente (10 970 ms). La anterior (35 ms, otro modelo) solo está en archive/. |
 | `figures/diagrama_variables.png` | `Regenerada con src/generar_figuras.py (original: work/cvrp_revision/assets/diagrama_variables.png)` | Diagrama de variables y restricciones | Mismo contenido; se movieron dos flechas que cruzaban etiquetas. |
-| `docs/Reto_CVRP_revisado.docx` | `outputs/cvrp_revision/Reto_CVRP_revisado.docx` | Informe vigente | Idéntico por hash a work/cvrp_revision/despues.docx. |
+| `docs/Reto_CVRP_revisado.docx` | Exportación actualizada del Google Doc (15/10/2026) | Informe vigente corregido | Sustituye la exportación anterior: corrige la atribución del óptimo de tres rutas y actualiza el anexo de código. Portada y mediciones históricas conservadas. |
 | `docs/metodologia.md, docs/coherencia.md, docs/inventario.md` | `— (nuevos)` | Documentación | Escritos para el repositorio. |
 | `archive/v1_modelo_particion_rutas/` | `work/cvrp/ (resolver_cvrp.py, resultados/, entrega/requirements.txt) + outputs/cvrp/Reto_CVRP_Etapa1.docx` | Antecedente: modelo por partición de rutas | Una sola copia (work/cvrp/entrega/ era un duplicado exacto). Es válido pero NO es el modelo vigente. |
 | `archive/v2_arcos_script_de_la_revision/resolver_cvrp_arcos_original.py` | `work/cvrp_revision/resolver_cvrp_arcos.py` | Script exacto que generó results/ | Trazabilidad: es el que acepta como óptimo un incumbente por límite de tiempo. |
@@ -31,7 +31,7 @@ Rutas relativas al directorio de trabajo original (`work/…`, `outputs/…`), q
 | Archivo | SHA-256 (12) |
 |---|---|
 | `data/instancia.txt` | `a76ebd6059d7` |
-| `docs/Reto_CVRP_revisado.docx` | `91fa118455a0` |
+| `docs/Reto_CVRP_revisado.docx` | `feeb88f45dda` |
 | `figures/comparacion.png` | `e39492bd4679` |
 | `figures/diagrama_variables.png` | `e33720fade91` |
 | `figures/rutas_exactas.png` | `0badd1e6990a` |
@@ -59,7 +59,7 @@ Rutas relativas al directorio de trabajo original (`work/…`, `outputs/…`), q
 | outputs/cvrp_revision/Respaldo_CVRP_revision.zip, outputs/cvrp/*.zip, outputs/cvrp_latex/*.zip, work/cvrp_latex/CVRP_Etapa_1.zip | Paquetes comprimidos que duplican archivos ya incluidos. |
 | work/cvrp_latex/, outputs/cvrp_latex/ (main.tex, Reto_CVRP_Etapa1.pdf, figuras, scripts de conversión, capturas) | La versión LaTeX está pendiente de actualización y aprobación; no se modificó ni se presenta como vigente. Sigue intacta en el directorio de origen. |
 | work/cvrp/original.docx, original.pdf | Documento original de partida; está superado por el informe vigente. |
-| work/cvrp/revision.docx/.pdf, work/cvrp_latex/aprobado.*, work/cvrp_revision/antes.*, despues.* | Estados intermedios del informe; el vigente es una copia de despues.docx. |
+| work/cvrp/revision.docx/.pdf, work/cvrp_latex/aprobado.*, work/cvrp_revision/antes.*, despues.* | Estados intermedios del informe; el vigente es la exportación corregida posterior del Google Doc. |
 | work/cvrp/render/, work/cvrp_revision/renders/, work/cvrp_latex/pagina-*.png, contacto-*.png, portada.png, cover.png | Renders y hojas de contacto de comprobación visual; artefactos regenerables. |
 | outputs/**/*.png de verificación en Google Docs / Prism, verificacion.json, manifest_sha256.json, cobertura.json | Evidencia de automatización de navegador y del flujo LaTeX; no necesaria para reproducir el análisis. |
 | work/cvrp_revision/editar_informe.py, preparar_modelo.py, verificar_documento.py; work/cvrp/crear_reporte.py; work/cvrp_latex/convertir.py, verificar.py; contenido*.json, estructura.json, cuerpo*.html | Scripts y datos intermedios que fabrican o comprueban los DOCX/LaTeX; no son necesarios para reproducir resultados (la parte de figuras se llevó a src/generar_figuras.py). |
