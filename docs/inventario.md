@@ -63,7 +63,6 @@ Rutas relativas al directorio de trabajo original (`work/…`, `outputs/…`), q
 | work/cvrp/render/, work/cvrp_revision/renders/, work/cvrp_latex/pagina-*.png, contacto-*.png, portada.png, cover.png | Renders y hojas de contacto de comprobación visual; artefactos regenerables. |
 | outputs/**/*.png de verificación en Google Docs / Prism, verificacion.json, manifest_sha256.json, cobertura.json | Evidencia de automatización de navegador y del flujo LaTeX; no necesaria para reproducir el análisis. |
 | work/cvrp_revision/editar_informe.py, preparar_modelo.py, verificar_documento.py; work/cvrp/crear_reporte.py; work/cvrp_latex/convertir.py, verificar.py; contenido*.json, estructura.json, cuerpo*.html | Scripts y datos intermedios que fabrican o comprueban los DOCX/LaTeX; no son necesarios para reproducir resultados (la parte de figuras se llevó a src/generar_figuras.py). |
-| work/cvrp_revision/referencia_modelo_exacto.py | Copia de código de otro autor (repositorio de referencia sin licencia). No se redistribuye; se cita. |
 | work/cvrp_revision/assets/e01–e09.png, rId7–rId11.png | Imágenes de ecuaciones y figuras incrustadas en los DOCX (el informe ya las contiene) y duplicados por hash. |
 | work/cvrp/entrega/ (duplicado exacto de work/cvrp/) | Duplicado por hash. |
 | work/cvrp_revision/resultados/rutas_*.png | Ya copiadas a figures/ (no se duplican en results/). |

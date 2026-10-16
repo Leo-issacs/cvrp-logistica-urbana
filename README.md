@@ -121,4 +121,4 @@ Una instancia pequeña y didáctica; sin unidades físicas, costos monetarios ni
 
 ## Fuentes
 
-Clarke y Wright (1964), *Operations Research* 12(4); Gillett y Miller (1974); Prins (2004); Vidal (2022); Reinelt, TSPLIB; y las demás referencias del [informe](docs/Reto_CVRP_revisado.docx). Como referencia de implementación se consultó el repositorio de [Sebastian-aleman](https://github.com/Sebastian-aleman/SP_Algoritmos-matematicos-bioinspirados/tree/main/SP%20bioinspirados/cvrp/src) (sin licencia declarada; no se copió código). Instancia y licencias: [`ATRIBUCIONES.md`](ATRIBUCIONES.md). Este repositorio **no declara licencia general**.
+Clarke y Wright (1964), *Operations Research* 12(4); Gillett y Miller (1974); Prins (2004); Vidal (2022); Reinelt, TSPLIB; y las demás referencias del [informe](docs/Reto_CVRP_revisado.docx). Instancia y licencias: [`ATRIBUCIONES.md`](ATRIBUCIONES.md). Este repositorio **no declara licencia general**.
