@@ -90,4 +90,6 @@ El informe (`docs/Reto_CVRP_revisado.docx`, versión del 15 de octubre de 2026 p
 - **Anexo A.** Documenta `--modelo`, los estados del solver y la validación de demandas positivas; el docstring que cita sobre demandas nulas corresponde a llamadas directas a `construir_modelo`, no a lo que acepta el programa (`leer()` las rechaza).
 - **Figuras.** Las del repositorio se regeneran con `src/generar_figuras.py` desde los resultados del modelo B (el diagrama no muestra las restricciones de subrutas). Las del modelo A están en `figures/historicas/`.
 
-Pendientes que no son del código: acordar qué algoritmo es «el algoritmo desarrollado con anterioridad» (se conserva Clarke–Wright + 2-opt), y verificar la versión renderizada del informe y del README, que no se revisaron aquí.
+**Cierre documental (15/10/2026).** Se adopta Clarke–Wright + 2-opt para esta entrega, coherente con el pseudocódigo, el Anexo A y las mediciones. Se sustituyó la Figura 1 por el diagrama del repositorio: sus píxeles coinciden tras la exportación a DOCX. Se revisó el README renderizado en GitHub y la exportación PDF del documento de Google Docs: conserva 19 páginas, la portada es idéntica y las nueve tablas no cambiaron. La comparación visual detecta cambios sólo en las páginas 8 y 9. No se generó LaTeX.
+
+La numeración (8) usada arriba para las restricciones explícitas pertenece al modelo A histórico. En el informe vigente, (8) identifica la contradicción que demuestra la conectividad del modelo B; no es una restricción adicional.

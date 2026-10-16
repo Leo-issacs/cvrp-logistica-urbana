@@ -14,19 +14,19 @@ Rutas relativas al directorio de trabajo original (`work/…`, `outputs/…`), q
 | `src/verificar_resultados.py` | `— (nuevo)` | Verificador de coherencia | Recalcula distancias/cargas desde la instancia; no existía en los materiales. |
 | `src/generar_figuras.py` | `work/cvrp_revision/editar_informe.py (solo código de las dos figuras) + resolver_cvrp_arcos.py` | Regenera las figuras desde un JSON de resultados | Extrae el código de figuras del script de edición del informe; evita publicar el script que manipula el DOCX. |
 | `data/instancia.txt` | `work/cvrp_revision/instancia.txt` | Instancia CVRP_10 (material del curso) | Idéntica por hash a work/cvrp/instancia.txt y work/cvrp/entrega/instancia.txt. |
-| `results/cbc_01.log … cbc_10.log` | `work/cvrp_revision/resultados/` | Registros CBC de las 10 mediciones vigentes | Evidencia de las tablas del informe. Solo se sustituyó la ruta local en la línea `command line`. |
+| `results/cbc_01.log … cbc_10.log` | `work/cvrp_revision/resultados/` | Registros CBC de las 10 mediciones históricas del modelo A | Antecedente; las tablas vigentes usan la medición del modelo B. Solo se sustituyó la ruta local en la línea `command line`. |
 | `results/cbc_3rutas.log` | `work/cvrp_revision/resultados/cbc_3rutas.log` | Registro CBC del modelo de arcos con m = 3 | Detenido por límite de tiempo (361.0004, sin probar). Se conserva como evidencia de la contradicción. |
 | `results/matriz_costos.csv` | `work/cvrp_revision/resultados/` | Matriz de distancias 11 × 11 | Idéntica por hash a la del modelo anterior (misma instancia). |
-| `results/mediciones.csv` | `work/cvrp_revision/resultados/` | Diez mediciones del modelo de arcos y de la heurística | Fuente de las Tablas 8 y 9 y de la Figura 5 del informe. |
+| `results/mediciones.csv` | `work/cvrp_revision/resultados/` | Diez mediciones históricas del modelo A y de la heurística | Fuente de las tablas y comparación históricas; las Tablas 8 y 9 y la Figura 5 vigentes usan `results/medicion_modelo_B_2026-10-15/`. |
 | `results/resultados.json` | `work/cvrp_revision/resultados/` | Resultados completos y entorno | Solo se sustituyó la ruta local del solver. Su campo tres_rutas guarda el incumbente 361.0004. |
 | `results/reproduccion_2026-10-15/` | `Generado en esta tarea` | Reejecución completa con entorno nuevo | Evidencia nueva, separada de la histórica. |
 | `figures/rutas_exactas.png` | `work/cvrp_revision/resultados/rutas_exactas.png` | Figura de rutas de la solución exacta (4 rutas) | Generada por el script de la revisión; numeración del modelo de arcos. |
 | `figures/rutas_heuristica.png` | `work/cvrp_revision/resultados/rutas_heuristica.png` | Figura de rutas de Clarke–Wright + 2-opt | Idéntica por hash a la del modelo anterior (la heurística no cambió). |
 | `figures/rutas_tres.png` | `Regenerada con src/generar_figuras.py` | Figura de la solución óptima con 3 rutas | Sustituye a la copia del modelo anterior; mismo contenido (339.1647). |
 | `figures/comparacion_B.png` | Generada con `src/generar_figuras.py` desde `results/medicion_modelo_B_2026-10-15/` (preparada también por Codex en `outputs/cvrp_modelo_B/`) | Distancia y tiempo medio, modelo B vs heurística | Figura vigente (2 975.4 ms). Visualmente equivalente a la preparada por Codex. |
-| `figures/diagrama_variables.png` | Generada con `src/generar_figuras.py` (modelo B) | Diagrama de variables y restricciones del modelo B | No muestra las restricciones de subrutas: el balance de producto las excluye. Sustituye al diagrama del modelo A (ahora en `figures/historicas/`); a diferencia del archivo preparado por Codex, no rotula «(8)» y sus flechas no cruzan etiquetas. |
+| `figures/diagrama_variables.png` | Generada con `src/generar_figuras.py` (modelo B) | Diagrama de variables y restricciones del modelo B | Usada también en la Figura 1 del informe vigente; píxeles idénticos en el DOCX exportado. El balance de producto excluye subrutas aisladas; las flechas no cruzan etiquetas. El diagrama de A permanece en `figures/historicas/`. |
 | `figures/historicas/comparacion_A.png`, `figures/historicas/diagrama_variables_A.png` | `work/cvrp_revision/assets/comparacion_actualizada.png` y `diagrama_variables.png` (regenerada) | Figuras históricas del modelo A (10 970 ms; diagrama con (8)) | Conservadas sin cambios, identificadas como históricas (`figures/historicas/LEEME.md`). |
-| `docs/Reto_CVRP_revisado.docx` | Exportación del Google Doc actualizado por Codex (15/10/2026, SHA-256 completo `585afafdb8c44c024a985f52e7022e58be08edb3edd79e4fd24559e0a27adc92`) | Informe vigente | Usa el modelo B y su medición principal; conserva el modelo A como antecedente y la comparación A/B/C. Sustituye a las exportaciones anteriores (huellas `feeb88f45dda`, `41d18e96b679`). Portada conservada; sin anexo B. |
+| `docs/Reto_CVRP_revisado.docx` | Exportación del Google Doc actualizado por Codex (15/10/2026, SHA-256 completo `bdf63e27c0f7439ef7c4f32cf2b28887e072eb9470b0595b21dc9bd88d44c247`) | Informe vigente | Modelo B y medición principal; A como antecedente y comparación A/B/C. Diagrama unificado y Clarke–Wright + 2-opt adoptado para la entrega. Sustituye a las exportaciones anteriores (`feeb88f45dda`, `41d18e96b679`, `585afafdb8c4`). 19 páginas; portada conservada; sin anexo B. |
 | `docs/metodologia.md, docs/coherencia.md, docs/inventario.md` | `— (nuevos)` | Documentación | Escritos para el repositorio. |
 | `archive/v1_modelo_particion_rutas/` | `work/cvrp/ (resolver_cvrp.py, resultados/, entrega/requirements.txt) + outputs/cvrp/Reto_CVRP_Etapa1.docx` | Antecedente: modelo por partición de rutas | Una sola copia (work/cvrp/entrega/ era un duplicado exacto). Es válido pero NO es el modelo vigente. |
 | `archive/v2_arcos_script_de_la_revision/resolver_cvrp_arcos_original.py` | `work/cvrp_revision/resolver_cvrp_arcos.py` | Script exacto que generó results/ | Trazabilidad: es el que acepta como óptimo un incumbente por límite de tiempo. |
@@ -36,7 +36,7 @@ Rutas relativas al directorio de trabajo original (`work/…`, `outputs/…`), q
 | Archivo | SHA-256 (12) |
 |---|---|
 | `data/instancia.txt` | `a76ebd6059d7` |
-| `docs/Reto_CVRP_revisado.docx` | `585afafdb8c4` |
+| `docs/Reto_CVRP_revisado.docx` | `bdf63e27c0f7` |
 | `figures/comparacion_B.png` | `1fd72c0b14c5` |
 | `figures/diagrama_variables.png` | `a74224543448` |
 | `figures/historicas/comparacion_A.png` | `e39492bd4679` |

@@ -60,7 +60,7 @@ Escala: ni A (enumeración exponencial) ni B están pensados para instancias gra
 2. Se calculan los ahorros $s_{ij} = c_{1i} + c_{1j} - c_{ij}$ y se fusionan rutas en orden decreciente de ahorro si $i$ y $j$ son extremos de rutas distintas y la carga combinada no supera `Q`.
 3. Cada ruta resultante se mejora con 2-opt.
 
-Es determinista y factible por construcción, pero **no** garantiza optimalidad. Es el algoritmo que se conserva en esta etapa; qué algoritmo acordó el equipo como «el algoritmo desarrollado con anterioridad» queda pendiente de confirmar (el enunciado pide programarlo y comparar tiempo y costo en porcentaje; no exige expresamente una metaheurística).
+Es determinista y factible por construcción, pero **no** garantiza optimalidad. Clarke–Wright + 2-opt es el algoritmo adoptado para esta entrega: su desarrollo se presenta en la sección 5 del informe, se implementa en el Anexo A y en `src/resolver_cvrp_arcos.py`, y se evalúa en la sección 7. Es una heurística clásica; no se presenta como algoritmo bioinspirado ni se atribuye su enseñanza a una clase previa.
 
 ## 4. Verificación independiente del óptimo
 

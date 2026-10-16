@@ -8,7 +8,7 @@ Proyecto del curso *Diseño de algoritmos matemáticos bioinspirados*, Etapa 1. 
 
 ## Resultado en breve
 
-Distancias (idénticas en todas las ejecuciones y con cualquier modelo) y tiempos de la **medición nueva con el modelo B** (`results/medicion_modelo_B_2026-10-15/`, 10 repeticiones tras calentamiento, un solo equipo):
+Distancias y tiempos de la **medición nueva con el modelo B** (`results/medicion_modelo_B_2026-10-15/`, 10 repeticiones tras calentamiento, un solo equipo). Los óptimos certificados coinciden entre formulaciones; una corrida detenida por tiempo puede devolver una solución de mayor distancia:
 
 | | Exacto, sin flota fija | Exacto, exactamente 3 rutas | Heurística (C–W + 2-opt) |
 |---|---:|---:|---:|
@@ -33,6 +33,8 @@ Distancias (idénticas en todas las ejecuciones y con cualquier modelo) y tiempo
 Una flota homogénea sale de un depósito, entrega a cada cliente una sola vez sin superar la capacidad y regresa. Se minimiza la distancia recorrida; el número de rutas lo decide el modelo. Con tres rutas se puede atender a todos (carga libre global 2.7 %), pero recorren más que las cuatro rutas óptimas.
 
 ## Método exacto frente a heurística
+
+El algoritmo adoptado para esta entrega es **Clarke–Wright + 2-opt dentro de cada ruta**. El pseudocódigo de la sección 5, el código del Anexo A y las mediciones del informe corresponden a este mismo procedimiento. Es una heurística clásica; los métodos bioinspirados se discuten como extensiones posteriores.
 
 | | Modelo exacto (B, predeterminado) | Clarke–Wright + 2-opt |
 |---|---|---|
@@ -80,7 +82,7 @@ Requiere Python 3.12 (otras versiones 3.10+ deberían funcionar, no se probaron)
 **Windows (PowerShell)** — comprobado en este repositorio:
 
 ```powershell
-git clone <url-del-repositorio> cvrp-logistica-urbana
+git clone https://github.com/Leo-issacs/cvrp-logistica-urbana.git
 cd cvrp-logistica-urbana
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
@@ -101,7 +103,7 @@ python -m unittest discover -s tests -v
 **macOS / Linux** — instrucciones **no ejecutadas aquí** (el trabajo se hizo solo en Windows 11); equivalen a las de arriba con las órdenes habituales de cada sistema:
 
 ```bash
-git clone <url-del-repositorio> cvrp-logistica-urbana
+git clone https://github.com/Leo-issacs/cvrp-logistica-urbana.git
 cd cvrp-logistica-urbana
 python3 -m venv .venv
 source .venv/bin/activate
@@ -148,7 +150,6 @@ Las fuentes de las tablas y figuras están en [`docs/inventario.md`](docs/invent
 - Los tiempos en otro equipo, y la causa de la diferencia entre 10.97 s y 5.42 s en el modelo A (se observó variación de rendimiento del equipo entre corridas, que no prueba la causa).
 - Las instrucciones para macOS/Linux no se han ejecutado.
 - No se ejecutó de nuevo el código del modelo anterior (`archive/`).
-- Qué algoritmo acordó el equipo como «el algoritmo desarrollado con anterioridad». Se conserva Clarke–Wright + 2-opt; el enunciado pide programarlo y comparar tiempo y costo en porcentaje, sin exigir una metaheurística.
 - No hay integración continua ni insignias de pruebas.
 
 ## Limitaciones
