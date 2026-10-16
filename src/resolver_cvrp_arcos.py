@@ -1,4 +1,4 @@
-"""CVRP: modelo de arcos y carga fisica (PuLP/CBC), SEC y ahorros + 2-opt.
+"""CVRP: modelo de arcos y carga fisica (PuLP/CBC) y ahorros de Clarke-Wright + 2-opt.
 Uso: python src/resolver_cvrp_arcos.py data/instancia.txt --out results/reproduccion_<fecha>
 Dependencias: pulp==3.3.0, matplotlib. Distancia euclidiana sin redondeo.
 
@@ -46,10 +46,39 @@ def enumerar(q,Q,depot,d):
             cols.append((subset,route,costo(route,d)))
     return cols
 
-def exacto(q,Q,depot,d,log=None,fixed_k=None,limite=120,exigir_optimo=True):
-    """Arcos x y carga fisica f; SEC explicitas para esta instancia pequena."""
-    start=time.perf_counter()
+class ResultadoNoOptimo(RuntimeError):
+    """El solver no entrego un optimo probado y el llamador lo exigio."""
+    def __init__(self, estado, mensaje):
+        super().__init__(f'{estado}: {mensaje}'); self.estado = estado
+
+MODELOS = {'A': 'vigente historico: 1 013 restricciones de subrutas (8) + f <= Q x',
+           'B': 'sin restricciones explicitas de subrutas; f <= Q x',
+           'C': 'experimental: como B con q_j x <= f <= (Q - q_i) x'}
+
+def clasificar_estado(status, sol_status):
+    """Estado de la corrida a partir de PuLP. LpStatus por si solo NO certifica nada:
+    PuLP informa 'Optimal' tambien cuando CBC se detiene por tiempo con una solucion entera.
+    Devuelve (estado, causa)."""
+    if status == pulp.LpStatusOptimal and sol_status == pulp.LpSolutionOptimal:
+        return 'optimo_probado', None
+    if sol_status == pulp.LpSolutionIntegerFeasible:
+        return 'factible_sin_prueba', 'limite de tiempo con solucion entera'
+    if status == pulp.LpStatusInfeasible or sol_status == pulp.LpSolutionInfeasible:
+        return 'sin_solucion_factible', 'modelo infactible'
+    if status == pulp.LpStatusNotSolved and sol_status == pulp.LpSolutionNoSolutionFound:
+        return 'sin_solucion_factible', 'sin solucion entera al terminar el limite'
+    return 'fallo_solver', f'LpStatus={pulp.LpStatus.get(status, status)}, sol_status={sol_status}'
+
+def construir_modelo(q,Q,depot,d,modelo='B',fixed_k=None):
+    """Modelo de arcos x y carga fisica f. modelo: A, B o C (ver MODELOS).
+    Eliminar las subrutas explicitas (B, C) es valido solo si toda demanda de cliente es
+    positiva: sumando el balance de producto (5) sobre un conjunto aislado S los flujos
+    internos se cancelan y queda 0 = suma de q_i en S > 0, imposible. Con una demanda nula
+    un ciclo aislado de clientes sin demanda seria factible: en ese caso se exige modelo A."""
+    if modelo not in MODELOS: raise ValueError(f'modelo desconocido: {modelo}')
     V=sorted(q); C=[i for i in V if i!=depot]
+    if modelo!='A' and any(q[i]<=0 for i in C):
+        raise ValueError('el modelo '+modelo+' requiere demandas de clientes positivas; use el modelo A (con subrutas)')
     A=[(i,j) for i in V for j in V if i!=j]
     model=pulp.LpProblem('CVRP_arcos_carga',pulp.LpMinimize)
     x=pulp.LpVariable.dicts('x',A,cat='Binary')
@@ -67,42 +96,92 @@ def exacto(q,Q,depot,d,log=None,fixed_k=None,limite=120,exigir_optimo=True):
     model += pulp.lpSum(f[depot,j] for j in C)==sum(q.values()), 'carga_inicial_total'
     if fixed_k is not None: model += m==fixed_k, 'flota_fija'
     for i,j in A:
-        model += f[i,j]<=Q*x[i,j], f'capacidad_{i}_{j}'
+        if modelo=='C':
+            model += f[i,j]<=(Q-q[i])*x[i,j], f'capacidad_{i}_{j}'
+            model += f[i,j]>=q[j]*x[i,j], f'carga_minima_{i}_{j}'
+        else:
+            model += f[i,j]<=Q*x[i,j], f'capacidad_{i}_{j}'
     n_sec=0
-    for size in range(2,len(C)+1):
-        for S in it.combinations(C,size):
-            model += pulp.lpSum(x[i,j] for i in S for j in S if i!=j)<=len(S)-1, f'subtour_{n_sec}'
-            n_sec+=1
-    build=time.perf_counter()-start
-    solver=pulp.PULP_CBC_CMD(msg=False,threads=0,gapRel=0,gapAbs=0,timeLimit=limite,
-                            logPath=str(log) if log else None)
-    ts=time.perf_counter();status=model.solve(solver);solve=time.perf_counter()-ts
-    assert pulp.LpStatus[status]=='Optimal',pulp.LpStatus[status]
-    # PuLP informa 'Optimal' tambien si CBC se detiene por tiempo con una solucion
-    # entera; sol_status distingue el optimo probado de un incumbente.
-    probado=model.sol_status==pulp.LpSolutionOptimal
-    assert probado or not exigir_optimo,'CBC no probo optimalidad (limite de tiempo)'
-    successor={i:j for i,j in A if i!=depot and x[i,j].value()>0.5}
+    if modelo=='A':
+        for size in range(2,len(C)+1):
+            for S in it.combinations(C,size):
+                model += pulp.lpSum(x[i,j] for i in S for j in S if i!=j)<=len(S)-1, f'subtour_{n_sec}'
+                n_sec+=1
+    return model,x,f,A,C,n_sec
+
+def reconstruir(x,A,C,depot,n_nodos,tol=1e-6):
+    """Rutas a partir de x. Rechaza valores ausentes o fraccionarios en vez de redondearlos."""
+    vals={a:x[a].value() for a in A}
+    if any(v is None or min(abs(v),abs(v-1))>tol for v in vals.values()):
+        raise ValueError('el solver devolvio valores ausentes o fraccionarios en x')
+    successor={i:j for i,j in A if i!=depot and vals[i,j]>0.5}
     routes=[]
-    for first in sorted(j for j in C if x[depot,j].value()>0.5):
+    for first in sorted(j for j in C if vals[depot,j]>0.5):
         route=[depot,first]
         while route[-1]!=depot:
-            assert len(route)<=len(V)
+            if len(route)>n_nodos: raise ValueError('ciclo que no regresa al deposito')
             route.append(successor[route[-1]])
         routes.append(route)
-    total=time.perf_counter()-start
-    # Verificacion fuera del cronometro: carga real en cada arco seleccionado.
-    for route in routes:
-        remaining=sum(q[i] for i in route)
-        for i,j in zip(route,route[1:]):
-            assert abs(f[i,j].value()-remaining)<1e-6
-            remaining-=q[j]
-    assert max(abs(c.value()) if c.sense==0 else max(0,-c.value()*c.sense)
-               for c in model.constraints.values())<1e-5
-    return routes,{'total_s':total,'build_s':build,'solve_s':solve,
-                   'variables':len(model.variables()),'constraints':len(model.constraints),
-                   'sec':n_sec,'status':pulp.LpStatus[status],'optimo_probado':probado,
-                   'objetivo':pulp.value(model.objective)}
+    return routes
+
+def leer_log_cbc(path):
+    """Cota inferior, brecha, nodos, iteraciones y estado textual del registro de CBC."""
+    import re
+    t=Path(path).read_text(errors='replace')
+    g=lambda p:(re.search(p,t) or [None,None])[1]
+    num=lambda s:None if s is None else float(s)
+    return {'resultado_cbc':g(r'Result - (.+)'),'objetivo_log':num(g(r'Objective value:\s+(\S+)')),
+            'cota_inferior':num(g(r'Lower bound:\s+(\S+)')),'brecha_cbc':num(g(r'Gap:\s+(\S+)')),
+            'nodos':num(g(r'Enumerated nodes:\s+(\S+)')),'iteraciones':num(g(r'Total iterations:\s+(\S+)')),
+            'relajacion_inicial':num(g(r'Continuous objective value is (\S+)'))}
+
+def exacto(q,Q,depot,d,log=None,fixed_k=None,limite=120,exigir_optimo=True,modelo='B'):
+    """Resuelve con CBC. Devuelve (rutas | None, info). info['estado'] es uno de:
+    optimo_probado, factible_sin_prueba, sin_solucion_factible, fallo_solver.
+    Si exigir_optimo y el estado no es optimo_probado se lanza ResultadoNoOptimo.
+    Tiempos: build_s (modelo), solve_s (CBC), reconstruct_s (rutas) y total_s = suma,
+    el mismo tramo que cronometra el script historico. La verificacion posterior queda fuera."""
+    start=time.perf_counter()
+    model,x,f,A,C,n_sec=construir_modelo(q,Q,depot,d,modelo,fixed_k)
+    t_build=time.perf_counter()
+    build=t_build-start
+    info={'modelo':modelo,'fixed_k':fixed_k,'limite_s':limite,'build_s':build,'solve_s':None,'reconstruct_s':None,
+          'variables':len(model.variables()),'constraints':len(model.constraints),'sec':n_sec,
+          'estado':None,'causa':None,'status':None,'sol_status':None,'optimo_probado':False,'objetivo':None}
+    solver=pulp.PULP_CBC_CMD(msg=False,threads=0,gapRel=0,gapAbs=0,timeLimit=limite,
+                            logPath=str(log) if log else None)
+    routes=None
+    try:
+        status=model.solve(solver)
+    except (pulp.PulpSolverError,OSError) as e:
+        info.update(estado='fallo_solver',causa=f'{type(e).__name__}: {e}',solve_s=time.perf_counter()-t_build)
+    else:
+        info['solve_s']=time.perf_counter()-t_build
+        info['status']=pulp.LpStatus[status]; info['sol_status']=model.sol_status
+        info['estado'],info['causa']=clasificar_estado(status,model.sol_status)
+        if info['estado'] in ('optimo_probado','factible_sin_prueba'):
+            t_rec=time.perf_counter()
+            try:
+                routes=reconstruir(x,A,C,depot,len(q))
+                info['objetivo']=pulp.value(model.objective)
+            except (ValueError,KeyError) as e:
+                routes=None; info.update(estado='fallo_solver',causa=str(e))
+            info['reconstruct_s']=time.perf_counter()-t_rec
+    info['optimo_probado']=info['estado']=='optimo_probado'
+    info['total_s']=sum(info[k] or 0.0 for k in ('build_s','solve_s','reconstruct_s'))  # = tramo medido, sin verificacion
+    if log and Path(log).exists(): info.update(leer_log_cbc(log))
+    if info['estado'] in ('optimo_probado','factible_sin_prueba'):
+        # Verificacion fuera del cronometro: carga real en cada arco seleccionado y restricciones.
+        for route in routes:
+            remaining=sum(q[i] for i in route)
+            for i,j in zip(route,route[1:]):
+                assert abs(f[i,j].value()-remaining)<1e-6
+                remaining-=q[j]
+        assert max(abs(c.value()) if c.sense==0 else max(0,-c.value()*c.sense)
+                   for c in model.constraints.values())<1e-5
+    if exigir_optimo and info['estado']!='optimo_probado':
+        raise ResultadoNoOptimo(info['estado'],info['causa'] or 'sin detalle')
+    return routes,info
 
 def dos_opt(route,d):
     while True:
@@ -174,48 +253,87 @@ def plot_routes(rows,xy,depot,path,title):
     ax.grid(alpha=.18); ax.legend(fontsize=8,loc='upper center',bbox_to_anchor=(.5,-.13),ncol=2)
     fig.tight_layout(); fig.savefig(path,dpi=180,bbox_inches='tight'); plt.close(fig)
 
+def resumen(vals):
+    if not vals: return None
+    return {'n':len(vals),'media':statistics.mean(vals),'mediana':statistics.median(vals),
+            'desv_est':statistics.stdev(vals) if len(vals)>1 else 0.0,'min':min(vals),'max':max(vals)}
+
 def main():
-    ap=argparse.ArgumentParser(); ap.add_argument('instance'); ap.add_argument('--out',default='resultados')
-    ap.add_argument('--limite-tres-rutas',type=float,default=120,help='segundos de CBC para el escenario de tres rutas')
+    ap=argparse.ArgumentParser(description='CVRP: modelo de arcos y carga (CBC) frente a Clarke-Wright + 2-opt')
+    ap.add_argument('instance'); ap.add_argument('--out',default='resultados')
+    ap.add_argument('--modelo',choices=sorted(MODELOS),default='B',
+                    help='B (predeterminado): sin subrutas explicitas; A: reproduce la evidencia historica; C: experimental')
+    ap.add_argument('--repeticiones',type=int,default=10,help='repeticiones medidas por caso (tras el calentamiento)')
+    ap.add_argument('--limite-libre',type=float,default=120,help='segundos de CBC por corrida sin flota fija')
+    ap.add_argument('--limite-tres-rutas',type=float,default=120,help='segundos de CBC por corrida con exactamente tres rutas')
     args=ap.parse_args()
     out=Path(args.out);out.mkdir(parents=True,exist_ok=True)
-    xy,q,Q,depot=leer(args.instance);d=matriz(xy)
-    # Una ejecucion de calentamiento para cada metodo, no contabilizada.
-    exacto(q,Q,depot,d); heuristica(q,Q,depot,d)
-    trials=[]
-    for run in range(10):
-        routes,t=exacto(q,Q,depot,d,out/f'cbc_{run+1:02}.log')
-        t0=time.perf_counter(); hr=heuristica(q,Q,depot,d); ht=time.perf_counter()-t0
-        erows=verificar(routes,q,Q,depot,d); hrows=verificar(hr,q,Q,depot,d)
-        print(f"Ejecucion {run+1}: exacto={t['total_s']:.6f}s, heuristica={ht:.6f}s",flush=True)
-        trials.append({'repeticion':run+1,**t,'heuristica_s':ht,
-                      'z_exacto':sum(r['distancia'] for r in erows),
-                      'z_heuristica':sum(r['distancia'] for r in hrows)})
-    assert abs(certificar_dp(q,Q,depot,d)-trials[0]['z_exacto'])<1e-7
-    rounded=matriz(xy,True); rr,_=exacto(q,Q,depot,rounded)
-    rounded_rows=verificar(rr,q,Q,depot,rounded)
-    three_cbc,t3=exacto(q,Q,depot,d,out/'cbc_3rutas.log',fixed_k=3,limite=args.limite_tres_rutas,exigir_optimo=False)
-    z3,three=particion_optima(q,Q,depot,d,k=3)
-    assert t3['objetivo']>=z3-1e-7
-    result={'xy':xy,'demanda':q,'capacidad':Q,'deposito':depot,'exacto':erows,'heuristica':hrows,
-            'repeticiones':trials,'distancia_redondeada_sensibilidad':rounded_rows,
+    xy,q,Q,depot=leer(args.instance);d=matriz(xy);mod=args.modelo
+    # Certificacion independiente (fuera de todo cronometro).
+    z_dp=certificar_dp(q,Q,depot,d); z3_dp,_=particion_optima(q,Q,depot,d,k=3)
+    # Calentamiento descartado: un caso libre, uno de tres rutas y la heuristica.
+    exacto(q,Q,depot,d,modelo=mod,limite=args.limite_libre,exigir_optimo=False)
+    exacto(q,Q,depot,d,modelo=mod,fixed_k=3,limite=args.limite_tres_rutas,exigir_optimo=False); heuristica(q,Q,depot,d)
+    filas=[]; libre_rows=heur_rows=tres_rows=None
+    for caso,k,lim in (('libre',None,args.limite_libre),('tres_rutas',3,args.limite_tres_rutas)):
+        for rep in range(1,args.repeticiones+1):
+            routes,t=exacto(q,Q,depot,d,out/(f'cbc_{caso}_{rep:02}.log'),fixed_k=k,limite=lim,exigir_optimo=False,modelo=mod)
+            rows=verificar(routes,q,Q,depot,d) if routes else None
+            z=sum(r['distancia'] for r in rows) if rows else None
+            hz=None
+            if caso=='libre':
+                t0=time.perf_counter(); hr=heuristica(q,Q,depot,d); hz=time.perf_counter()-t0
+                hrows=verificar(hr,q,Q,depot,d)
+                heur_rows=hrows
+            print(f"{caso} {rep}: {t['estado']} z={z} total={t['total_s']:.3f}s"+(f" heuristica={hz*1000:.3f}ms" if hz is not None else ''),flush=True)
+            filas.append({'caso':caso,'repeticion':rep,**{k2:t.get(k2) for k2 in ('modelo','estado','causa','status','sol_status','optimo_probado',
+                          'objetivo','cota_inferior','brecha_cbc','nodos','iteraciones','relajacion_inicial','build_s','solve_s','reconstruct_s','total_s',
+                          'limite_s','variables','constraints','sec')},'z_exacto':z,'heuristica_s':hz,'z_heuristica':sum(r['distancia'] for r in hrows) if hz is not None else None})
+            if rep==1:
+                if caso=='libre': libre_rows=rows
+                else: tres_rows=rows
+    with (out/'mediciones.csv').open('w',newline='',encoding='utf8') as fh:  # la evidencia se guarda siempre
+        w=csv.DictWriter(fh,fieldnames=list(filas[0]));w.writeheader();w.writerows(filas)
+    sin_solucion=[f"{f['caso']} {f['repeticion']}: {f['estado']} ({f['causa']})" for f in filas if f['z_exacto'] is None]
+    if sin_solucion:
+        raise SystemExit('CBC no entrego solucion en algunas corridas (ver mediciones.csv y cbc_*.log); no se calculan estadisticas ni porcentajes:\n  '+'\n  '.join(sin_solucion))
+    rounded=matriz(xy,True); rr,rt=exacto(q,Q,depot,rounded,modelo=mod,exigir_optimo=False)
+    redondeada=verificar(rr,q,Q,depot,rounded) if rr else None
+    libre=[f for f in filas if f['caso']=='libre']; tres=[f for f in filas if f['caso']=='tres_rutas']
+    def stats(grupo):
+        s={k2:resumen([f[k2] for f in grupo if f[k2] is not None]) for k2 in ('build_s','solve_s','reconstruct_s','total_s')}
+        s['optimo_probado']=f"{sum(1 for f in grupo if f['estado']=='optimo_probado')}/{len(grupo)}"
+        s['estados']={e:sum(1 for f in grupo if f['estado']==e) for e in sorted({f['estado'] for f in grupo})}
+        return s
+    est_libre,est_tres=stats(libre),stats(tres)
+    est_h=resumen([f['heuristica_s'] for f in libre])
+    ze=libre[0]['z_exacto']; zh=libre[0]['z_heuristica']; z3=z3_dp  # el sobrecosto usa el optimo certificado de 3 rutas
+    te,th=est_libre['total_s']['media'],est_h['media']
+    result={'esquema':2,'modelo':mod,'descripcion_modelo':MODELOS[mod],
+            'configuracion':{'calentamiento':'1 corrida libre + 1 de tres rutas + 1 heuristica, descartadas','repeticiones':args.repeticiones,
+                             'limite_libre_s':args.limite_libre,'limite_tres_rutas_s':args.limite_tres_rutas,
+                             'cbc':{'threads':0,'gapRel':0,'gapAbs':0},
+                             'tiempo_exacto':'build_s + solve_s + reconstruct_s; sin lectura, matriz, verificacion, certificacion ni figuras',
+                             'tiempo_heuristica':'ahorros + fusiones + 2-opt'},
             'entorno':{'python':platform.python_version(),'pulp':pulp.__version__,'sistema':platform.platform(),
                        'procesador':platform.processor(),'solver':Path(pulp.PULP_CBC_CMD().path).name+' (incluido en PuLP)','fecha':datetime.date.today().isoformat()},
-            'dp_verificado':True,'tres_rutas':verificar(three,q,Q,depot,d),'tres_rutas_certificado_dp':z3,
-            'tres_rutas_cbc_arcos':{**t3,'rutas':verificar(three_cbc,q,Q,depot,d)}}
-    for key in ('total_s','build_s','solve_s','heuristica_s'):
-        vals=[t[key] for t in trials]
-        result[key]={'media':statistics.mean(vals),'mediana':statistics.median(vals),'desv_est':statistics.stdev(vals),'min':min(vals),'max':max(vals)}
-    result['gap_costo_pct']=100*(trials[0]['z_heuristica']-trials[0]['z_exacto'])/trials[0]['z_exacto']
-    result['gap_tiempo_pct']=100*(result['heuristica_s']['media']-result['total_s']['media'])/result['total_s']['media']
+            'xy':xy,'demanda':q,'capacidad':Q,'deposito':depot,
+            'exacto':libre_rows,'heuristica':heur_rows,'tres_rutas':tres_rows,'tres_rutas_estado_primera_repeticion':tres[0]['estado'],
+            'distancia_redondeada_sensibilidad':redondeada,
+            'certificacion_dp':{'libre':z_dp,'tres_rutas':z3_dp},
+            'estadisticas':{'exacto_libre':est_libre,'exacto_tres_rutas':est_tres,'heuristica_s':est_h},
+            'porcentajes':{
+                'gap_costo_pct':{'valor':100*(zh-ze)/ze,'formula':'100 (Z_heur - Z_exacto) / Z_exacto','denominador':'Z_exacto = %.10f'%ze},
+                'reduccion_distancia_vs_heuristica_pct':{'valor':100*(zh-ze)/zh,'formula':'100 (Z_heur - Z_exacto) / Z_heur','denominador':'Z_heur = %.10f'%zh},
+                'reduccion_tiempo_heuristica_pct':{'valor':100*(te-th)/te,'formula':'100 (t_exacto - t_heur) / t_exacto','denominador':'t_exacto medio = %.6f s'%te},
+                'razon_tiempos_exacto_sobre_heuristica':te/th,
+                'sobrecosto_tres_rutas_pct':{'valor':100*(z3-ze)/ze,'formula':'100 (Z_3_certificado - Z_libre) / Z_libre','denominador':'Z_exacto = %.10f'%ze}}}
     (out/'resultados.json').write_text(json.dumps(result,indent=2,ensure_ascii=False),encoding='utf8')
-    with (out/'matriz_costos.csv').open('w',newline='',encoding='utf8') as f:
-        w=csv.writer(f);w.writerow(['nodo']+list(xy));w.writerows([[i]+[d[i,j] for j in xy] for i in xy])
-    with (out/'mediciones.csv').open('w',newline='',encoding='utf8') as f:
-        w=csv.DictWriter(f,fieldnames=list(trials[0]));w.writeheader();w.writerows(trials)
-    plot_routes(erows,xy,depot,out/'rutas_exactas.png','Solución exacta · CVRP de 10 clientes')
-    plot_routes(hrows,xy,depot,out/'rutas_heuristica.png','Ahorros de Clarke–Wright + 2-opt')
-    plot_routes(result['tres_rutas'],xy,depot,out/'rutas_tres.png','Escenario de flota mínima · 3 rutas')
-    print(json.dumps({k:result[k] for k in ('total_s','heuristica_s','gap_costo_pct','gap_tiempo_pct')},ensure_ascii=False,indent=2))
+    with (out/'matriz_costos.csv').open('w',newline='',encoding='utf8') as fh:
+        w=csv.writer(fh);w.writerow(['nodo']+list(xy));w.writerows([[i]+[d[i,j] for j in xy] for i in xy])
+    plot_routes(libre_rows,xy,depot,out/'rutas_exactas.png','Solución exacta · CVRP de 10 clientes')
+    plot_routes(heur_rows,xy,depot,out/'rutas_heuristica.png','Ahorros de Clarke–Wright + 2-opt')
+    plot_routes(tres_rows,xy,depot,out/'rutas_tres.png','Escenario de flota mínima · 3 rutas')
+    print(json.dumps({'estadisticas':{'libre_total_s':est_libre['total_s'],'tres_total_s':est_tres['total_s'],'heuristica_s':est_h},'porcentajes':result['porcentajes']},ensure_ascii=False,indent=1))
 
 if __name__=='__main__': main()

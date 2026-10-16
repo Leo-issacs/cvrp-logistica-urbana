@@ -6,7 +6,11 @@ Rutas relativas al directorio de trabajo original (`work/…`, `outputs/…`), q
 
 | Ruta en el repositorio | Origen | Qué es | Por qué / observaciones |
 |---|---|---|---|
-| `src/resolver_cvrp_arcos.py` | `work/cvrp_revision/resolver_cvrp_arcos.py` | Código principal (modelo de arcos y carga + Clarke–Wright + 2-opt) | Modificado: distingue óptimo probado de incumbente y certifica 3 rutas por particiones (ver docs/coherencia.md). El original está en archive/. |
+| `src/resolver_cvrp_arcos.py` | `work/cvrp_revision/resolver_cvrp_arcos.py` | Código principal (modelos A/B/C + Clarke–Wright + 2-opt) | Modificado dos veces: (1) distingue óptimo probado de incumbente y certifica 3 rutas por particiones; (2) modelo B predeterminado, estados explícitos del solver, tiempos separados. El original está en archive/. |
+| `src/comparar_variantes.py` | — (nuevo) | Comparación de A, B y C con orden rotado | Generado en esta fase. |
+| `tests/test_estados.py` | — (nuevo) | Pruebas de estados del solver y validez del modelo B | Generado en esta fase. |
+| `results/medicion_modelo_B_2026-10-15/` | Generado en esta fase | Medición nueva con el modelo B (10 repeticiones libre y 3 rutas, heurística) | Evidencia nueva, separada de la histórica; solo se omitió la ruta local en la línea `command line` de los registros. |
+| `results/comparacion_variantes_2026-10-15/` | Generado en esta fase | Comparación de A, B y C (60 corridas) | Evidencia nueva, incluye corridas del modelo A detenidas sin probar optimalidad. |
 | `src/verificar_resultados.py` | `— (nuevo)` | Verificador de coherencia | Recalcula distancias/cargas desde la instancia; no existía en los materiales. |
 | `src/generar_figuras.py` | `work/cvrp_revision/editar_informe.py (solo código de las dos figuras) + resolver_cvrp_arcos.py` | Regenera las figuras desde un JSON de resultados | Extrae el código de figuras del script de edición del informe; evita publicar el script que manipula el DOCX. |
 | `data/instancia.txt` | `work/cvrp_revision/instancia.txt` | Instancia CVRP_10 (material del curso) | Idéntica por hash a work/cvrp/instancia.txt y work/cvrp/entrega/instancia.txt. |
@@ -21,7 +25,7 @@ Rutas relativas al directorio de trabajo original (`work/…`, `outputs/…`), q
 | `figures/rutas_tres.png` | `Regenerada con src/generar_figuras.py` | Figura de la solución óptima con 3 rutas | Sustituye a la copia del modelo anterior; mismo contenido (339.1647). |
 | `figures/comparacion.png` | `work/cvrp_revision/assets/comparacion_actualizada.png` | Distancia y tiempo medio, modelo de arcos vs heurística | Versión vigente (10 970 ms). La anterior (35 ms, otro modelo) solo está en archive/. |
 | `figures/diagrama_variables.png` | `Regenerada con src/generar_figuras.py (original: work/cvrp_revision/assets/diagrama_variables.png)` | Diagrama de variables y restricciones | Mismo contenido; se movieron dos flechas que cruzaban etiquetas. |
-| `docs/Reto_CVRP_revisado.docx` | Exportación actualizada del Google Doc (15/10/2026) | Informe vigente corregido | Sustituye la exportación anterior: corrige la atribución del óptimo de tres rutas y actualiza el anexo de código. Portada y mediciones históricas conservadas. |
+| `docs/Reto_CVRP_revisado.docx` | Exportación actualizada del Google Doc tras ajustar fuentes y atribuciones (15/10/2026) | Informe vigente | Sustituye la exportación anterior (huella anterior `feeb88f45dda`). Portada y mediciones históricas conservadas. Se basa en el modelo A; véase `docs/coherencia.md` §6. |
 | `docs/metodologia.md, docs/coherencia.md, docs/inventario.md` | `— (nuevos)` | Documentación | Escritos para el repositorio. |
 | `archive/v1_modelo_particion_rutas/` | `work/cvrp/ (resolver_cvrp.py, resultados/, entrega/requirements.txt) + outputs/cvrp/Reto_CVRP_Etapa1.docx` | Antecedente: modelo por partición de rutas | Una sola copia (work/cvrp/entrega/ era un duplicado exacto). Es válido pero NO es el modelo vigente. |
 | `archive/v2_arcos_script_de_la_revision/resolver_cvrp_arcos_original.py` | `work/cvrp_revision/resolver_cvrp_arcos.py` | Script exacto que generó results/ | Trazabilidad: es el que acepta como óptimo un incumbente por límite de tiempo. |
@@ -31,7 +35,7 @@ Rutas relativas al directorio de trabajo original (`work/…`, `outputs/…`), q
 | Archivo | SHA-256 (12) |
 |---|---|
 | `data/instancia.txt` | `a76ebd6059d7` |
-| `docs/Reto_CVRP_revisado.docx` | `feeb88f45dda` |
+| `docs/Reto_CVRP_revisado.docx` | `41d18e96b679` |
 | `figures/comparacion.png` | `e39492bd4679` |
 | `figures/diagrama_variables.png` | `e33720fade91` |
 | `figures/rutas_exactas.png` | `0badd1e6990a` |
@@ -51,6 +55,10 @@ Rutas relativas al directorio de trabajo original (`work/…`, `outputs/…`), q
 | `results/matriz_costos.csv` | `7576c2357214` |
 | `results/mediciones.csv` | `5c494d812924` |
 | `results/resultados.json` | `b56684be847a` |
+| `results/medicion_modelo_B_2026-10-15/resultados.json` | `c61ff09277b8` |
+| `results/medicion_modelo_B_2026-10-15/mediciones.csv` | `f4eb2311bf42` |
+| `results/comparacion_variantes_2026-10-15/resultados.json` | `04369e036cd4` |
+| `results/comparacion_variantes_2026-10-15/mediciones.csv` | `f956be9a7be2` |
 
 ## Excluido y por qué
 

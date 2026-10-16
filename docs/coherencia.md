@@ -56,3 +56,33 @@ Los **resultados** (rutas, distancias, GAP) se reproducen exactamente; los **tie
 - **Comparación de tiempos.** La figura `comparacion.png` de la versión anterior mostraba 35.005 ms (exacto, modelo por partición) frente a 0.128 ms; la vigente muestra 10 970 ms (modelo de arcos) frente a 0.487 ms. **No se pueden mezclar:** son formulaciones distintas. Solo se versionó la vigente.
 - **Anexo B:** no existe en la revisión vigente y no se reincorporó.
 - **Documento compartido:** se revisó y corrigió la versión en línea; se comprobó su exportación posterior en DOCX y PDF. La portada se comparó con la copia previa, tanto en texto como visualmente.
+
+## 5. Modelo B y mediciones nuevas (15 de octubre de 2026)
+
+A partir de un diagnóstico externo, revisado también por el equipo del informe, se integró en `src/` el **modelo B** (el modelo de arcos y carga sin las 1 013 restricciones explícitas de subrutas) como opción y como valor predeterminado. El modelo A se conserva (`--modelo A`) para reproducir la evidencia histórica y el modelo C queda como experimento opcional. Nada de `results/` ni de `results/reproduccion_2026-10-15/` se modificó.
+
+| Comprobación | Resultado |
+|---|---|
+| B devuelve el óptimo libre y el de tres rutas | 318.9894867478 y 339.1646737616 en las 20 corridas, con `optimo_probado`; coinciden con la certificación por particiones |
+| B excluye subrutas aisladas | por el balance de producto con demandas positivas ([`metodologia.md`](metodologia.md)); todas las soluciones de B y C se verificaron factibles; con demandas nulas se exige el modelo A |
+| Tamaño | A: 1 167 restricciones; B: 154; C: 264 (más una con tres rutas) |
+| Relajación lineal inicial | A 286.92; B 276.46; C 291.14 |
+| Tiempo, sin flota fija | A 5.49 s, B 2.07 s, C 1.78 s (comparación con orden rotado) |
+| Tiempo, tres rutas | A: 2/10 probadas; B: 10/10, media 17.4 s en la comparación y 10.98 s en la medición propia; C: 10/10, 23.4 s |
+| Verificadores | 38/38 (medición B) y 13/13 con 8 avisos (comparación) |
+
+**Lectura prudente.** Que (8) fortalezca la relajación lineal (276.46 → 286.92) no implica que mejore el tiempo de CBC: en esta instancia, con esta versión de CBC y en este equipo, quitarlas redujo el tiempo sin flota fija y permitió probar siempre el caso de tres rutas dentro de 120 s. No es una propiedad general. Las cotas de carga adicionales (C) mejoraron la relajación y el tiempo sin flota fija, pero no el de tres rutas respecto de B.
+
+**Los tiempos varían con el momento del equipo.** El mismo modelo B tardó 2.98 s (medición propia), 2.07 s (comparación) y 2.08 s (experimento exploratorio previo) en el caso libre, y en la comparación sus corridas de tres rutas pasaron de ≈ 6.3 s a ≈ 17–22 s con idéntico número de nodos e iteraciones. Esto apoya que parte de la diferencia 10.97 s / 5.42 s observada con el modelo A es variación del equipo, pero **no demuestra la causa** de aquella diferencia.
+
+**Un experimento exploratorio previo tenía un defecto de protocolo:** su cronómetro terminaba antes de reconstruir las rutas, mientras que el tiempo histórico sí las incluye. Sus números no se versionan; la comparación del repositorio mide `build_s`, `solve_s` y `reconstruct_s`, y su total es el mismo tramo que el del script histórico.
+
+## 6. Desajustes entre el código nuevo y el informe vigente
+
+El informe (`docs/Reto_CVRP_revisado.docx`) **no se modificó** y sigue basado en el modelo A y sus mediciones históricas. Hasta que se actualice:
+
+- La sección 4 describe el modelo con las 1 013 restricciones de subrutas (8) y 1 167 restricciones; el código predeterminado es ahora el modelo B (154 restricciones).
+- Las secciones de tiempos y la Figura 5 usan 10.970 s (modelo A, medición histórica) y razón ≈ 22 546; la medición nueva del modelo B da 2.975 s y razón ≈ 15 008. No deben mezclarse: son modelos y momentos distintos.
+- La sección 1.3 usa 5.97 % (base: distancia de la heurística) y el resto 6.35 % (base: óptimo); ambos son correctos y el repositorio los presenta con sus denominadores.
+- El anexo de código es un extracto de la versión anterior de `resolver_cvrp_arcos.py` (la función `exacto` cambió de forma).
+- El informe presenta el −99.9956 % de tiempo con el modelo A; con B es 99.993 % menos (reducción de la heurística respecto del exacto).

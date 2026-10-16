@@ -1,0 +1,149 @@
+{
+  "esquema": "comparacion",
+  "certificacion_dp": {
+    "libre": 318.98948674783003,
+    "tres_rutas": 339.1646737615703
+  },
+  "configuracion": {
+    "repeticiones": 10,
+    "limite_s": 120,
+    "orden": "rotativo: ABC, BCA, CAB, ...",
+    "calentamiento": "1 corrida descartada por variante y caso"
+  },
+  "entorno": {
+    "python": "3.12.10",
+    "pulp": "3.3.0",
+    "sistema": "Windows-11-10.0.26300-SP0",
+    "procesador": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+    "fecha": "2026-10-15"
+  },
+  "resumen": {
+    "libre_A": {
+      "n": 10,
+      "estados": {
+        "optimo_probado": 10
+      },
+      "probadas": "10/10",
+      "tiempo_total_s": {
+        "media": 5.486567679994915,
+        "mediana": 5.498229149998224,
+        "desv_est": 0.04737117844132933,
+        "min": 5.399335699985386,
+        "max": 5.537301899996237
+      },
+      "nota_tiempo": "todas las corridas probaron optimalidad",
+      "solve_s_media": 5.471312139996735,
+      "nodos_media": 218.0,
+      "iteraciones_media": 15377.0,
+      "objetivos_probados": [
+        318.989486748
+      ]
+    },
+    "libre_B": {
+      "n": 10,
+      "estados": {
+        "optimo_probado": 10
+      },
+      "probadas": "10/10",
+      "tiempo_total_s": {
+        "media": 2.067875069999718,
+        "mediana": 2.0695067499909783,
+        "desv_est": 0.02511076357696652,
+        "min": 2.0348146999895107,
+        "max": 2.107865400001174
+      },
+      "nota_tiempo": "todas las corridas probaron optimalidad",
+      "solve_s_media": 2.065898890000244,
+      "nodos_media": 240.0,
+      "iteraciones_media": 20066.0,
+      "objetivos_probados": [
+        318.989486748
+      ]
+    },
+    "libre_C": {
+      "n": 10,
+      "estados": {
+        "optimo_probado": 10
+      },
+      "probadas": "10/10",
+      "tiempo_total_s": {
+        "media": 1.777167100000952,
+        "mediana": 1.7766078500062576,
+        "desv_est": 0.017939192342325338,
+        "min": 1.7591651999973692,
+        "max": 1.8197747000085656
+      },
+      "nota_tiempo": "todas las corridas probaron optimalidad",
+      "solve_s_media": 1.774446899999748,
+      "nodos_media": 168.0,
+      "iteraciones_media": 15725.0,
+      "objetivos_probados": [
+        318.989486748
+      ]
+    },
+    "tres_rutas_A": {
+      "n": 10,
+      "estados": {
+        "factible_sin_prueba": 8,
+        "optimo_probado": 2
+      },
+      "probadas": "2/10",
+      "tiempo_total_s": {
+        "media": 113.5235185399957,
+        "mediana": 120.2117428499987,
+        "desv_est": 14.133405676207401,
+        "min": 86.47615549998591,
+        "max": 120.3115056999959
+      },
+      "nota_tiempo": "promedio de corridas con estados mixtos",
+      "solve_s_media": 113.48346455999562,
+      "nodos_media": 9437.5,
+      "iteraciones_media": 277106.0,
+      "objetivos_probados": [
+        339.164673762
+      ]
+    },
+    "tres_rutas_B": {
+      "n": 10,
+      "estados": {
+        "optimo_probado": 10
+      },
+      "probadas": "10/10",
+      "tiempo_total_s": {
+        "media": 17.405988230000368,
+        "mediana": 19.875261399996816,
+        "desv_est": 6.062681605765738,
+        "min": 6.2826972999901045,
+        "max": 22.296419800026342
+      },
+      "nota_tiempo": "todas las corridas probaron optimalidad",
+      "solve_s_media": 17.400096289999784,
+      "nodos_media": 8247.0,
+      "iteraciones_media": 204300.0,
+      "objetivos_probados": [
+        339.164673762
+      ]
+    },
+    "tres_rutas_C": {
+      "n": 10,
+      "estados": {
+        "optimo_probado": 10
+      },
+      "probadas": "10/10",
+      "tiempo_total_s": {
+        "media": 23.35628920000163,
+        "mediana": 24.655552250005712,
+        "desv_est": 12.13645342119254,
+        "min": 10.556975800005603,
+        "max": 35.56217800000741
+      },
+      "nota_tiempo": "todas las corridas probaron optimalidad",
+      "solve_s_media": 23.349150940000253,
+      "nodos_media": 10713.0,
+      "iteraciones_media": 341329.0,
+      "objetivos_probados": [
+        339.164673762
+      ]
+    }
+  }
+}

@@ -1,0 +1,383 @@
+{
+  "esquema": 2,
+  "modelo": "B",
+  "descripcion_modelo": "sin restricciones explicitas de subrutas; f <= Q x",
+  "configuracion": {
+    "calentamiento": "1 corrida libre + 1 de tres rutas + 1 heuristica, descartadas",
+    "repeticiones": 10,
+    "limite_libre_s": 120,
+    "limite_tres_rutas_s": 120,
+    "cbc": {
+      "threads": 0,
+      "gapRel": 0,
+      "gapAbs": 0
+    },
+    "tiempo_exacto": "build_s + solve_s + reconstruct_s; sin lectura, matriz, verificacion, certificacion ni figuras",
+    "tiempo_heuristica": "ahorros + fusiones + 2-opt"
+  },
+  "entorno": {
+    "python": "3.12.10",
+    "pulp": "3.3.0",
+    "sistema": "Windows-11-10.0.26300-SP0",
+    "procesador": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+    "solver": "cbc.exe (incluido en PuLP)",
+    "fecha": "2026-10-15"
+  },
+  "xy": {
+    "1": [
+      50.0,
+      50.0
+    ],
+    "2": [
+      20.0,
+      70.0
+    ],
+    "3": [
+      30.0,
+      80.0
+    ],
+    "4": [
+      60.0,
+      75.0
+    ],
+    "5": [
+      80.0,
+      70.0
+    ],
+    "6": [
+      25.0,
+      45.0
+    ],
+    "7": [
+      40.0,
+      30.0
+    ],
+    "8": [
+      65.0,
+      25.0
+    ],
+    "9": [
+      85.0,
+      40.0
+    ],
+    "10": [
+      45.0,
+      60.0
+    ],
+    "11": [
+      70.0,
+      55.0
+    ]
+  },
+  "demanda": {
+    "1": 0,
+    "2": 12,
+    "3": 18,
+    "4": 10,
+    "5": 15,
+    "6": 14,
+    "7": 20,
+    "8": 16,
+    "9": 11,
+    "10": 13,
+    "11": 17
+  },
+  "capacidad": 50,
+  "deposito": 1,
+  "exacto": [
+    {
+      "ruta": [
+        1,
+        6,
+        2,
+        3,
+        1
+      ],
+      "carga": 44,
+      "distancia": 101.18784351429869,
+      "desperdicio_pct": 12.0
+    },
+    {
+      "ruta": [
+        1,
+        9,
+        8,
+        7,
+        1
+      ],
+      "carga": 47,
+      "distancia": 109.25632678936441,
+      "desperdicio_pct": 6.0
+    },
+    {
+      "ruta": [
+        1,
+        10,
+        1
+      ],
+      "carga": 13,
+      "distancia": 22.360679774997898,
+      "desperdicio_pct": 74.0
+    },
+    {
+      "ruta": [
+        1,
+        11,
+        5,
+        4,
+        1
+      ],
+      "carga": 42,
+      "distancia": 86.18463666916907,
+      "desperdicio_pct": 16.0
+    }
+  ],
+  "heuristica": [
+    {
+      "ruta": [
+        1,
+        11,
+        1
+      ],
+      "carga": 17,
+      "distancia": 41.23105625617661,
+      "desperdicio_pct": 66.0
+    },
+    {
+      "ruta": [
+        1,
+        3,
+        2,
+        6,
+        1
+      ],
+      "carga": 44,
+      "distancia": 101.18784351429869,
+      "desperdicio_pct": 12.0
+    },
+    {
+      "ruta": [
+        1,
+        7,
+        8,
+        1
+      ],
+      "carga": 36,
+      "distancia": 77.01053681718832,
+      "desperdicio_pct": 28.0
+    },
+    {
+      "ruta": [
+        1,
+        9,
+        5,
+        4,
+        10,
+        1
+      ],
+      "carga": 49,
+      "distancia": 119.82343354907738,
+      "desperdicio_pct": 2.0
+    }
+  ],
+  "tres_rutas": [
+    {
+      "ruta": [
+        1,
+        8,
+        7,
+        6,
+        1
+      ],
+      "carga": 50,
+      "distancia": 101.35815804575077,
+      "desperdicio_pct": 0.0
+    },
+    {
+      "ruta": [
+        1,
+        9,
+        5,
+        4,
+        10,
+        1
+      ],
+      "carga": 49,
+      "distancia": 119.82343354907738,
+      "desperdicio_pct": 2.0
+    },
+    {
+      "ruta": [
+        1,
+        11,
+        3,
+        2,
+        1
+      ],
+      "carga": 47,
+      "distancia": 117.98308216674216,
+      "desperdicio_pct": 6.0
+    }
+  ],
+  "distancia_redondeada_sensibilidad": [
+    {
+      "ruta": [
+        1,
+        4,
+        5,
+        11,
+        1
+      ],
+      "carga": 42,
+      "distancia": 87,
+      "desperdicio_pct": 16.0
+    },
+    {
+      "ruta": [
+        1,
+        6,
+        2,
+        3,
+        1
+      ],
+      "carga": 44,
+      "distancia": 100,
+      "desperdicio_pct": 12.0
+    },
+    {
+      "ruta": [
+        1,
+        9,
+        8,
+        7,
+        1
+      ],
+      "carga": 47,
+      "distancia": 108,
+      "desperdicio_pct": 6.0
+    },
+    {
+      "ruta": [
+        1,
+        10,
+        1
+      ],
+      "carga": 13,
+      "distancia": 22,
+      "desperdicio_pct": 74.0
+    }
+  ],
+  "certificacion_dp": {
+    "libre": 318.98948674783003,
+    "tres_rutas": 339.1646737615703
+  },
+  "estadisticas": {
+    "exacto_libre": {
+      "build_s": {
+        "n": 10,
+        "media": 0.0036783600007765926,
+        "mediana": 0.0034511000048951246,
+        "desv_est": 0.001154127581555702,
+        "min": 0.0025965000095311552,
+        "max": 0.005800300001283176
+      },
+      "solve_s": {
+        "n": 10,
+        "media": 2.9716233100014504,
+        "mediana": 2.963032250001561,
+        "desv_est": 0.09614326860354808,
+        "min": 2.808969800011255,
+        "max": 3.1605878000118537
+      },
+      "reconstruct_s": {
+        "n": 10,
+        "media": 9.856000397121534e-05,
+        "mediana": 9.51000110944733e-05,
+        "desv_est": 3.712349527436875e-05,
+        "min": 6.059999577701092e-05,
+        "max": 0.00016060000052675605
+      },
+      "total_s": {
+        "n": 10,
+        "media": 2.9754002300061986,
+        "mediana": 2.9679967000047327,
+        "desv_est": 0.09675180294137063,
+        "min": 2.811731800000416,
+        "max": 3.1665487000136636
+      },
+      "optimo_probado": "10/10",
+      "estados": {
+        "optimo_probado": 10
+      }
+    },
+    "exacto_tres_rutas": {
+      "build_s": {
+        "n": 10,
+        "media": 0.0042323599976953116,
+        "mediana": 0.004201550007564947,
+        "desv_est": 0.001211114778044908,
+        "min": 0.0025451999972574413,
+        "max": 0.006703299994114786
+      },
+      "solve_s": {
+        "n": 10,
+        "media": 10.974200510002266,
+        "mediana": 11.169196400005603,
+        "desv_est": 0.6398434674220289,
+        "min": 9.608727899991209,
+        "max": 11.56542429998808
+      },
+      "reconstruct_s": {
+        "n": 10,
+        "media": 0.00011876999924425036,
+        "mediana": 0.0001017500035231933,
+        "desv_est": 7.592294482596155e-05,
+        "min": 5.709999823011458e-05,
+        "max": 0.00030840000545140356
+      },
+      "total_s": {
+        "n": 10,
+        "media": 10.978551639999205,
+        "mediana": 11.173999250000634,
+        "desv_est": 0.6406210239234016,
+        "min": 9.611335099980352,
+        "max": 11.569739899990964
+      },
+      "optimo_probado": "10/10",
+      "estados": {
+        "optimo_probado": 10
+      }
+    },
+    "heuristica_s": {
+      "n": 10,
+      "media": 0.0001982499990845099,
+      "mediana": 0.00019704999431269243,
+      "desv_est": 7.952718972789419e-05,
+      "min": 0.00010699999984353781,
+      "max": 0.0003538000019034371
+    }
+  },
+  "porcentajes": {
+    "gap_costo_pct": {
+      "valor": 6.352367156516885,
+      "formula": "100 (Z_heur - Z_exacto) / Z_exacto",
+      "denominador": "Z_exacto = 318.9894867478"
+    },
+    "reduccion_distancia_vs_heuristica_pct": {
+      "valor": 5.972943834120983,
+      "formula": "100 (Z_heur - Z_exacto) / Z_heur",
+      "denominador": "Z_heur = 339.2528701367"
+    },
+    "reduccion_tiempo_heuristica_pct": {
+      "valor": 99.99333703086108,
+      "formula": "100 (t_exacto - t_heur) / t_exacto",
+      "denominador": "t_exacto medio = 2.975400 s"
+    },
+    "razon_tiempos_exacto_sobre_heuristica": 15008.324054205148,
+    "sobrecosto_tres_rutas_pct": {
+      "valor": 6.324718478790895,
+      "formula": "100 (Z_3_certificado - Z_libre) / Z_libre",
+      "denominador": "Z_exacto = 318.9894867478"
+    }
+  }
+}

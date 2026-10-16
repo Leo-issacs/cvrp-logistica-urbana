@@ -66,6 +66,11 @@ def main():
     ap.add_argument('--salida', default='figures')
     args = ap.parse_args()
     R = json.loads((Path(args.resultados) / 'resultados.json').read_text(encoding='utf8'))
+    if R.get('esquema') == 2:  # resultados de la medicion nueva: se adaptan a las claves historicas
+        est = R['estadisticas']
+        R['total_s'] = {'media': est['exacto_libre']['total_s']['media']}
+        R['heuristica_s'] = {'media': est['heuristica_s']['media']}
+        R['tres_rutas_certificado_dp'] = R['certificacion_dp']['tres_rutas']
     xy = {int(k): tuple(v) for k, v in R['xy'].items()}; dep = R['deposito']
     out = Path(args.salida); out.mkdir(parents=True, exist_ok=True)
     plot_routes(R['exacto'], xy, dep, out / 'rutas_exactas.png', 'Solución exacta · CVRP de 10 clientes')
