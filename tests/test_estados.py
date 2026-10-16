@@ -86,6 +86,17 @@ class Solver(unittest.TestCase):
         R.construir_modelo(q, CAP, DEP, D, 'A')  # con subrutas explicitas si se admite
 
 
+class Entrada(unittest.TestCase):
+    def test_leer_rechaza_demandas_no_positivas(self):
+        import tempfile
+        original = (RAIZ / 'data' / 'instancia.txt').read_text(encoding='utf-8-sig')
+        texto = original.replace('2 12', '2 0', 1)
+        self.assertNotEqual(texto, original)
+        with tempfile.TemporaryDirectory() as d:
+            f = Path(d) / 'cero.txt'; f.write_text(texto, encoding='utf8')
+            with self.assertRaises(AssertionError): R.leer(f)
+
+
 class Cotas(unittest.TestCase):
     def test_modelos_tienen_el_tamano_esperado(self):
         n = {m: len(R.construir_modelo(Q_, CAP, DEP, D, m)[0].constraints) for m in 'ABC'}

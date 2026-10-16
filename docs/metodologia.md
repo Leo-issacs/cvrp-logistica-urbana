@@ -1,6 +1,6 @@
 # Metodología
 
-Este documento resume el modelo, los métodos y los supuestos de **el código de este repositorio**. El análisis completo, con la discusión del problema y la bibliografía, está en el [informe vigente](Reto_CVRP_revisado.docx), que todavía se basa en las mediciones históricas del modelo A (véase la sección 7 y [`coherencia.md`](coherencia.md)).
+Este documento resume el modelo, los métodos y los supuestos de **el código de este repositorio**. El análisis completo, con la discusión del problema y la bibliografía, está en el [informe vigente](Reto_CVRP_revisado.docx), que usa el modelo B y su medición principal; las mediciones históricas del modelo A se conservan aparte (véase la sección 7 y [`coherencia.md`](coherencia.md)).
 
 ## 1. Problema
 
@@ -8,7 +8,9 @@ CVRP estático, determinista, simétrico y con flota homogénea: un depósito (n
 
 ## 2. Modelo exacto: arcos binarios y carga física
 
-![Diagrama de variables y restricciones](../figures/diagrama_variables.png)
+![Diagrama de variables y restricciones del modelo B](../figures/diagrama_variables.png)
+
+(El diagrama del modelo A, con las restricciones de subrutas, está en [`../figures/historicas/`](../figures/historicas/LEEME.md).)
 
 Conjuntos: $V = \{1,\dots,11\}$, clientes $C = V \setminus \{1\}$, arcos $A = \{(i,j) : i \ne j\}$ (110 arcos).
 Variables: $x_{ij} \in \{0,1\}$ (se recorre el arco $i \to j$) y $f_{ij} \ge 0$ (producto que el vehículo aún lleva al recorrer ese arco).
@@ -39,7 +41,7 @@ Con exactamente tres rutas se añade $m = 3$ (una restricción más). Todas se r
 
 Por (2) y (3) cada cliente tiene exactamente un arco de entrada y uno de salida, así que los arcos elegidos forman rutas que pasan por el depósito y, quizá, ciclos de clientes sin depósito. Sea $S \subseteq C$ el conjunto de clientes de uno de esos ciclos aislados: ningún arco elegido une $S$ con el resto, de modo que por (6) $f = 0$ en todos los arcos entre $S$ y el resto. Al sumar el balance (5) sobre $S$, el flujo de cada arco interno aparece una vez sumando y otra restando y se cancela: queda $0 = \sum_{i \in S} q_i$. Con **demandas de clientes estrictamente positivas** esa suma es mayor que cero y la solución es imposible. Por tanto (5) ya prohíbe los ciclos aislados y (8) es redundante para la **factibilidad entera**.
 
-La demostración depende de $q_i > 0$. Si un cliente tuviera demanda nula, un ciclo aislado formado solo por clientes sin demanda cumpliría (5) con $0 = 0$. El lector de la instancia rechaza demandas no positivas y `construir_modelo` lanza `ValueError` para los modelos B y C si encuentra alguna; en ese caso hay que usar A. Esto está cubierto en `tests/test_estados.py`.
+La demostración depende de $q_i > 0$: con una demanda nula, un ciclo aislado de clientes sin demanda cumpliría (5) con $0 = 0$. **Alcance real del programa:** `leer()` rechaza cualquier cliente con demanda no positiva (exige $0 < q_i \le Q$), de modo que el programa solo admite instancias con demandas estrictamente positivas y B es válido en todas ellas. Además, `construir_modelo` —que se puede llamar directamente— lanza `ValueError` para los modelos B y C si recibe una demanda no positiva; con el modelo A esa llamada sí construiría el modelo, pero ese caso no se ofrece desde la línea de órdenes ni se probó con un solver. No se amplía el alcance a demandas nulas. Está cubierto en `tests/test_estados.py`.
 
 Que (8) sea redundante para la factibilidad **no** significa que sea inútil ni inofensiva para el solver: en la relajación lineal sube la cota de 276.46 (modelo B) a 286.92 (modelo A), pero añade 1 013 filas y, en las mediciones de este repositorio, CBC resolvió más rápido sin ellas (véase [`coherencia.md`](coherencia.md)). Eso es un resultado de esta instancia, formulación y versión de CBC, no una propiedad general.
 
@@ -92,7 +94,7 @@ El GAP de costo **no** es una cota ni una brecha de optimalidad del solver, y la
 
 ## 7. Protocolo de medición
 
-Medición nueva, en `results/medicion_modelo_B_<fecha>/` (modelo B), sin tocar los registros históricos:
+Medición principal, en `results/medicion_modelo_B_<fecha>/` (modelo B), sin tocar los registros históricos del modelo A:
 
 - Calentamiento descartado (un caso libre, uno de tres rutas y la heurística) y diez repeticiones medidas por caso, más diez de la heurística junto al caso libre.
 - Tiempos separados `build_s` (construir el modelo), `solve_s` (CBC) y `reconstruct_s` (rutas); `total_s` es su suma y es el mismo tramo que cronometraba el script histórico. Lectura del archivo, matriz, verificación, certificación independiente y figuras quedan fuera.
@@ -102,7 +104,7 @@ Medición nueva, en `results/medicion_modelo_B_<fecha>/` (modelo B), sin tocar l
 - Ambos métodos son deterministas: las repeticiones miden variación temporal, no diversidad de soluciones. Los nodos e iteraciones de CBC también se repiten exactamente; solo cambia el reloj.
 - Los tiempos dependen del equipo, la carga del sistema y la versión de CBC. No son comparables con los del modelo anterior por partición de rutas, ni con las mediciones históricas del modelo A hechas en otro momento.
 
-Las mediciones históricas del informe (modelo A, 10.970 s) siguen en `results/` y no se sustituyeron.
+Las mediciones históricas del modelo A (10.970 s) siguen en `results/` y no se sustituyeron; el informe vigente usa la medición del modelo B como principal.
 
 ## 8. Supuestos y limitaciones
 

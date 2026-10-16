@@ -3,9 +3,13 @@
 Uso: python src/generar_figuras.py [results] [--salida figures]
 
 - rutas_exactas.png, rutas_heuristica.png, rutas_tres.png: se trazan desde resultados.json.
-- comparacion.png: distancia y tiempo medio, desde resultados.json (barras con los valores medidos).
-- diagrama_variables.png: diagrama explicativo del modelo; los numeros del ejemplo
-  (ruta 1-3-2-6-1, carga inicial 44) salen de la solucion exacta documentada.
+- comparacion_<M>.png: distancia y tiempo medio, desde resultados.json (barras con los valores medidos).
+- diagrama_variables[_A].png: diagrama explicativo del modelo; los numeros del ejemplo
+  (ruta 1-3-2-6-1, carga inicial 44) salen de la solucion exacta documentada. El modelo B excluye las
+  subrutas con el balance de producto (demandas positivas); el modelo A las prohibe con las restricciones (8).
+- El modelo M (A o B) se toma de resultados.json (esquema 2) o es A en la evidencia historica;
+  se puede forzar con --modelo. Nombres: B -> comparacion_B.png y diagrama_variables.png;
+  A -> comparacion_A.png y diagrama_variables_A.png (las figuras historicas versionadas estan en figures/historicas/).
 No se inventa ningun dato: cada barra y cada ruta proviene del JSON indicado.
 """
 import argparse, json
@@ -19,20 +23,21 @@ from matplotlib.patches import FancyBboxPatch
 from resolver_cvrp_arcos import particion_optima, matriz, plot_routes
 
 
-def comparacion(R, destino):
+def comparacion(R, destino, modelo='A'):
     ze = sum(r['distancia'] for r in R['exacto']); zh = sum(r['distancia'] for r in R['heuristica'])
-    fig, axs = plt.subplots(1, 2, figsize=(8, 3.6)); etiquetas = ['Exacto', 'Heurística']
-    for ax, vals, titulo, eje in [(axs[0], [ze, zh], 'Calidad de solución', 'Distancia total'),
+    fig, axs = plt.subplots(1, 2, figsize=(8, 3.6)); etiquetas = [f'Exacto {modelo}' if modelo == 'B' else 'Exacto', 'Heurística']
+    for ax, vals, titulo, eje in [(axs[0], [ze, zh], 'Distancia total' if modelo == 'B' else 'Calidad de solución', 'Unidades de distancia' if modelo == 'B' else 'Distancia total'),
                                   (axs[1], [R['total_s']['media'] * 1000, R['heuristica_s']['media'] * 1000],
-                                   '10 ejecuciones por método', 'Tiempo medio (ms, escala logarítmica)')]:
+                                   'Tiempo medio · diez ejecuciones' if modelo == 'B' else '10 ejecuciones por método',
+                                   'Milisegundos (escala logarítmica)' if modelo == 'B' else 'Tiempo medio (ms, escala logarítmica)')]:
         ax.bar(etiquetas, vals, color=['#356b8c', '#d78235']); ax.set(title=titulo, ylabel=eje)
-        if ax is axs[1]: ax.set_yscale('log'); ax.set_ylim(.1, max(vals) * 4)
+        if ax is axs[1]: ax.set_yscale('log'); ax.set_ylim(.05 if modelo == 'B' else .1, max(vals) * 4)
         else: ax.set_ylim(0, 390)
         for j, v in enumerate(vals): ax.text(j, v * 1.08, f'{v:.3f}' if ax is axs[1] else f'{v:.2f}', ha='center', fontsize=9)
     fig.tight_layout(); fig.savefig(destino, dpi=200); plt.close(fig)
 
 
-def diagrama(destino):
+def diagrama(destino, modelo='A'):
     azul, verde = '#164769', '#16756f'
     fig, ax = plt.subplots(figsize=(11, 7)); ax.set(xlim=(0, 11), ylim=(0, 7)); ax.axis('off')
     def caja(x, y, w, h, texto, col=azul):
@@ -53,7 +58,10 @@ def diagrama(destino):
         ax.text((a[0] + b[0]) / 2, 4.3, etiquetas[k], ha='center', fontsize=10)
     caja(.1, .5, 3.4, 1.6, 'CARGA FÍSICA: fᵢⱼ\n0 ≤ fᵢⱼ ≤ 50 xᵢⱼ  (6)\n44 ≤ 50 al salir\nf₆₁ = 0 al regresar  (7)', verde)
     caja(3.8, .5, 3.4, 1.6, 'ENTREGA EN EL CLIENTE\nCarga entrante − saliente\n= demanda qᵢ  (5)\nNodo 3: 44 − 26 = 18', verde)
-    caja(7.5, .5, 3.4, 1.6, 'SIN CICLOS AISLADOS\nArcos internos ≤ |S| − 1  (8)\nS = {2,3,6}: 2 ≤ 2\nConexión con el depósito', verde)
+    if modelo == 'B':
+        caja(7.5, .5, 3.4, 1.6, 'SIN CICLOS AISLADOS\nBalance (5) y enlace (6)\nUn ciclo aislado exigiría\n0 = suma de demandas > 0', verde)
+    else:
+        caja(7.5, .5, 3.4, 1.6, 'SIN CICLOS AISLADOS\nArcos internos ≤ |S| − 1  (8)\nS = {2,3,6}: 2 ≤ 2\nConexión con el depósito', verde)
     for a, b in [((1.8, 5.45), (1.9, 4.65)), ((5.5, 5.45), (5.5, 4.18)), ((9.2, 5.45), (10.3, 4.18)),
                  ((1.8, 2.2), (1.8, 3.5)), ((5.5, 2.2), (3.1, 3.02)), ((9.2, 2.2), (7.9, 3.02))]:
         ax.annotate('', xy=b, xytext=a, arrowprops=dict(arrowstyle='->', lw=1.2, color='#6e8291'))
@@ -64,8 +72,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('resultados', nargs='?', default='results')
     ap.add_argument('--salida', default='figures')
+    ap.add_argument('--modelo', choices=['A', 'B'], help='modelo del diagrama y de la comparacion (por defecto, el del JSON)')
     args = ap.parse_args()
     R = json.loads((Path(args.resultados) / 'resultados.json').read_text(encoding='utf8'))
+    modelo = args.modelo or (R.get('modelo', 'A') if R.get('esquema') == 2 else 'A')
     if R.get('esquema') == 2:  # resultados de la medicion nueva: se adaptan a las claves historicas
         est = R['estadisticas']
         R['total_s'] = {'media': est['exacto_libre']['total_s']['media']}
@@ -83,8 +93,8 @@ def main():
         _, rutas = particion_optima(q, R['capacidad'], dep, d, k=3)
         tres = [{'ruta': r, 'carga': sum(q[i] for i in r), 'distancia': sum(d[a, b] for a, b in zip(r, r[1:]))} for r in rutas]
     plot_routes(tres, xy, dep, out / 'rutas_tres.png', 'Escenario de flota mínima · 3 rutas')
-    comparacion(R, out / 'comparacion.png')
-    diagrama(out / 'diagrama_variables.png')
+    comparacion(R, out / f'comparacion_{modelo}.png', modelo)
+    diagrama(out / ('diagrama_variables.png' if modelo == 'B' else 'diagrama_variables_A.png'), modelo)
     print('Figuras escritas en', out)
 
 

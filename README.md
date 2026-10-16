@@ -24,7 +24,7 @@ Distancias (idénticas en todas las ejecuciones y con cualquier modelo) y tiempo
 - Reducción de tiempo de la heurística = 100 · (t_E − t_H) / **t_E** ≈ 99.99 %; razón t_E / t_H ≈ 15 008. El tiempo es otra cantidad y no se mezcla con el GAP.
 - Tres rutas en lugar de cuatro: 20.175 unidades más, 6.32 % sobre el óptimo libre. Minimizar distancia y minimizar vehículos son objetivos distintos.
 
-> **Mediciones históricas del informe.** El informe vigente aún presenta las mediciones del modelo A (con 1 013 restricciones de subrutas): 10.970 s de media y 0.487 ms para la heurística, en [`results/`](results/). Una reejecución propia del modelo A dio 5.421 s con idénticas distancias ([`results/reproduccion_2026-10-15/`](results/reproduccion_2026-10-15/LEEME.md)). **Los tiempos no son comparables entre mediciones**: dependen del modelo, del equipo y del momento (véase [`docs/coherencia.md`](docs/coherencia.md)), ni con los del [modelo anterior](archive/v1_modelo_particion_rutas/README.md). El informe todavía no se ha actualizado con la medición nueva.
+> **Evidencia histórica, separada.** El informe vigente usa el modelo B y esta medición como principal. Las mediciones anteriores del modelo A (con 1 013 restricciones de subrutas: 10.970 s de media y 0.487 ms para la heurística) siguen en [`results/`](results/) como antecedente, junto con una reejecución propia del modelo A de 5.421 s y distancias idénticas ([`results/reproduccion_2026-10-15/`](results/reproduccion_2026-10-15/LEEME.md)). **Los tiempos no son comparables entre mediciones**: dependen del modelo, del equipo y del momento (véase [`docs/coherencia.md`](docs/coherencia.md)), ni con los del [modelo anterior](archive/v1_modelo_particion_rutas/README.md).
 
 **Datos de la instancia:** capacidad por vehículo `Q = 50`; demanda total 146 → al menos `⌈146/50⌉ = 3` rutas. Distancia euclidiana **sin redondeo** (con distancias enteras tipo EUC_2D el óptimo es 317). El archivo no indica unidades físicas.
 
@@ -43,7 +43,7 @@ Una flota homogénea sale de un depósito, entrega a cada cliente una sola vez s
 
 Hay tres variantes (`--modelo`): **B** (predeterminada), **A** (reproduce la evidencia histórica) y **C** (experimental, con cotas de carga más ajustadas). Su comparación está en [`results/comparacion_variantes_2026-10-15/`](results/comparacion_variantes_2026-10-15/LEEME.md): sin flota fija B resolvió en 2.07 s frente a 5.49 s de A, y con tres rutas B probó el óptimo en 10/10 corridas y A en 2/10 con un límite de 120 s; los tiempos absolutos de tres rutas muestran deriva del equipo.
 
-![Variables y restricciones del modelo de arcos y carga](figures/diagrama_variables.png)
+![Variables y restricciones del modelo B de arcos y carga](figures/diagrama_variables.png)
 
 Ecuaciones completas, por qué no hacen falta las subrutas, estados del solver y protocolo de medición: [`docs/metodologia.md`](docs/metodologia.md).
 
@@ -61,13 +61,15 @@ Ecuaciones completas, por qué no hacen falta las subrutas, estados del solver y
 **Heurística, 339.2529:** [`figures/rutas_heuristica.png`](figures/rutas_heuristica.png) (cargas 17, 44, 36 y 49).
 **Flota mínima, 3 rutas, 339.1647:** [`figures/rutas_tres.png`](figures/rutas_tres.png) (cargas 47, 50 y 49), certificado por enumeración de particiones. El modelo B lo prueba en 10/10 corridas; el modelo A de la evidencia histórica no lo probó en 120 s ([detalle](docs/coherencia.md#2-contradicción-encontrada-escenario-de-tres-rutas)).
 
-![Comparación de distancia y tiempo (mediciones históricas del modelo A)](figures/comparacion.png)
+![Comparación de distancia y tiempo del modelo B y la heurística (medición principal)](figures/comparacion_B.png)
+
+Las figuras del modelo A (comparación con 10 970 ms y diagrama con las restricciones de subrutas) se conservan, identificadas como históricas, en [`figures/historicas/`](figures/historicas/LEEME.md).
 
 ## Informe vigente y versiones históricas
 
 | Documento | Estado |
 |---|---|
-| [`docs/Reto_CVRP_revisado.docx`](docs/Reto_CVRP_revisado.docx) | **Vigente** (revisión del 15 de octubre de 2026, modelo de arcos y carga). Copia de respaldo; la versión editable no se enlaza aquí. Se basa en las mediciones históricas del modelo A. |
+| [`docs/Reto_CVRP_revisado.docx`](docs/Reto_CVRP_revisado.docx) | **Vigente** (revisión del 15 de octubre de 2026, modelo de arcos y carga). Copia de respaldo; la versión editable no se enlaza aquí. Usa el modelo B y su medición principal; conserva el modelo A como antecedente histórico y la comparación A/B/C. |
 | [`archive/v1_modelo_particion_rutas/`](archive/v1_modelo_particion_rutas/) | Histórico: modelo anterior por partición de rutas, válido pero superado. |
 | Versión LaTeX | Pendiente de actualización y aprobación; **no incluida**. |
 
@@ -129,12 +131,12 @@ Salidas de cada ejecución: `resultados.json`, `mediciones.csv`, `matriz_costos.
 | [`results/reproduccion_2026-10-15/`](results/reproduccion_2026-10-15/LEEME.md) | Reejecución posterior del modelo A, con su entorno |
 | [`results/medicion_modelo_B_2026-10-15/`](results/medicion_modelo_B_2026-10-15/LEEME.md) | Medición nueva con el modelo B |
 | [`results/comparacion_variantes_2026-10-15/`](results/comparacion_variantes_2026-10-15/LEEME.md) | Comparación de A, B y C |
-| [`figures/`](figures/) | Rutas, comparación histórica y diagrama del modelo |
+| [`figures/`](figures/) | Rutas, comparación y diagrama del modelo B; [`historicas/`](figures/historicas/LEEME.md): figuras del modelo A |
 | [`docs/`](docs/) | Informe vigente, [metodología](docs/metodologia.md), [coherencia](docs/coherencia.md), [inventario](docs/inventario.md) |
 | [`archive/`](archive/README.md) | Modelo anterior y script original de la revisión |
 | [`ATRIBUCIONES.md`](ATRIBUCIONES.md) | Material de terceros y licencias |
 
-Cada tabla y figura del informe se rastrea a su fuente en [`docs/inventario.md`](docs/inventario.md): las mediciones salen de `results/mediciones.csv` y las soluciones del caso principal y de la heurística de `results/resultados.json`. La Tabla 6 y la Figura 3 muestran el óptimo de tres rutas certificado por particiones y respaldado por el registro del modelo anterior; el campo histórico `tres_rutas` contiene otro incumbente y no es su fuente.
+Las fuentes de las tablas y figuras están en [`docs/inventario.md`](docs/inventario.md). Las mediciones principales del informe (Tabla 8, Tabla 9 y Figura 5) salen de `results/medicion_modelo_B_2026-10-15/mediciones.csv` (la Tabla 8 se contrastó con esa tabla) y la comparación A/B/C de `results/comparacion_variantes_2026-10-15/`. La evidencia del modelo A sigue en `results/`; su campo histórico `tres_rutas` contiene un incumbente de 361.0004 y no es fuente del óptimo de tres rutas (339.1647, certificado por particiones).
 
 ## Estado de la verificación
 
@@ -143,7 +145,6 @@ Cada tabla y figura del informe se rastrea a su fuente en [`docs/inventario.md`]
 **Hallazgo corregido:** el registro histórico del modelo de arcos con tres rutas terminó por tiempo en 361.0004 sin probar optimalidad. El informe y su copia DOCX ya atribuyen 339.1647 a la certificación por particiones. [Análisis completo](docs/coherencia.md).
 
 **Pendiente o no verificado:**
-- El informe y la figura de comparación todavía usan las mediciones históricas del modelo A; la medición nueva aún no está incorporada.
 - Los tiempos en otro equipo, y la causa de la diferencia entre 10.97 s y 5.42 s en el modelo A (se observó variación de rendimiento del equipo entre corridas, que no prueba la causa).
 - Las instrucciones para macOS/Linux no se han ejecutado.
 - No se ejecutó de nuevo el código del modelo anterior (`archive/`).
@@ -152,7 +153,7 @@ Cada tabla y figura del informe se rastrea a su fuente en [`docs/inventario.md`]
 
 ## Limitaciones
 
-Una instancia pequeña y didáctica; sin unidades físicas, costos monetarios ni emisiones; el modelo B depende de que toda demanda sea positiva (con demandas nulas hay que usar el modelo A); ninguna formulación está pensada para instancias grandes; la razón de tiempos depende de la formulación, de CBC y del equipo.
+Una instancia pequeña y didáctica; sin unidades físicas, costos monetarios ni emisiones; el programa solo admite demandas de clientes estrictamente positivas (`leer()` rechaza las demás) y el modelo B depende de ello; ninguna formulación está pensada para instancias grandes; la razón de tiempos depende de la formulación, de CBC y del equipo.
 
 ## Fuentes
 

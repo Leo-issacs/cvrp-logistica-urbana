@@ -53,7 +53,7 @@ Los **resultados** (rutas, distancias, GAP) se reproducen exactamente; los **tie
 ## 4. Otras observaciones
 
 - **Numeración de rutas.** El informe conserva la orientación y numeración representativas de sus tablas y figuras originales. `figures/rutas_exactas.png` usa el orden del modelo de arcos, que puede ser diferente. Los conjuntos de clientes y recorridos son equivalentes; los identificadores R1–R4 son etiquetas locales de cada presentación y no vehículos distintos.
-- **Comparación de tiempos.** La figura `comparacion.png` de la versión anterior mostraba 35.005 ms (exacto, modelo por partición) frente a 0.128 ms; la vigente muestra 10 970 ms (modelo de arcos) frente a 0.487 ms. **No se pueden mezclar:** son formulaciones distintas. Solo se versionó la vigente.
+- **Comparación de tiempos.** La figura de comparación de la versión anterior mostraba 35.005 ms (exacto, modelo por partición) frente a 0.128 ms; la vigente muestra 10 970 ms (modelo de arcos) frente a 0.487 ms. **No se pueden mezclar:** son formulaciones distintas. Solo se versionó la vigente.
 - **Anexo B:** no existe en la revisión vigente y no se reincorporó.
 - **Documento compartido:** se revisó y corrigió la versión en línea; se comprobó su exportación posterior en DOCX y PDF. La portada se comparó con la copia previa, tanto en texto como visualmente.
 
@@ -77,12 +77,17 @@ A partir de un diagnóstico externo, revisado también por el equipo del informe
 
 **Un experimento exploratorio previo tenía un defecto de protocolo:** su cronómetro terminaba antes de reconstruir las rutas, mientras que el tiempo histórico sí las incluye. Sus números no se versionan; la comparación del repositorio mide `build_s`, `solve_s` y `reconstruct_s`, y su total es el mismo tramo que el del script histórico.
 
-## 6. Desajustes entre el código nuevo y el informe vigente
+## 6. Sincronización con el informe vigente
 
-El informe (`docs/Reto_CVRP_revisado.docx`) **no se modificó** y sigue basado en el modelo A y sus mediciones históricas. Hasta que se actualice:
+El informe (`docs/Reto_CVRP_revisado.docx`, versión del 15 de octubre de 2026 posterior a la integración del modelo B) usa el modelo B como formulación principal y su medición como principal. Lo contrastado contra el repositorio:
 
-- La sección 4 describe el modelo con las 1 013 restricciones de subrutas (8) y 1 167 restricciones; el código predeterminado es ahora el modelo B (154 restricciones).
-- Las secciones de tiempos y la Figura 5 usan 10.970 s (modelo A, medición histórica) y razón ≈ 22 546; la medición nueva del modelo B da 2.975 s y razón ≈ 15 008. No deben mezclarse: son modelos y momentos distintos.
-- La sección 1.3 usa 5.97 % (base: distancia de la heurística) y el resto 6.35 % (base: óptimo); ambos son correctos y el repositorio los presenta con sus denominadores.
-- El anexo de código es un extracto de la versión anterior de `resolver_cvrp_arcos.py` (la función `exacto` cambió de forma).
-- El informe presenta el −99.9956 % de tiempo con el modelo A; con B es 99.993 % menos (reducción de la heurística respecto del exacto).
+- **Modelo.** Describe B con 154 restricciones (155 con m = 3) y presenta A como antecedente con 1 013 restricciones explícitas y 1 167 restricciones.
+- **Tabla 8.** Los tiempos de las diez repeticiones coinciden con `results/medicion_modelo_B_2026-10-15/mediciones.csv` (3016.158 ms, 0.107 ms, 10680.474 ms, etc.).
+- **Tiempos y porcentajes.** 2.975 s y 0.198 ms, GAP de costo 6.352 % (base: óptimo), 5.973 % (base: distancia heurística, sección ambiental) y reducción de tiempo 99.9933 %, con la razón de tiempos de la medición de B.
+- **Tres rutas.** Atribuye 339.164674 al modelo B (10/10 corridas) y a la certificación por particiones; conserva el incumbente histórico del modelo A (361.000366, cota 299.712) como evidencia separada.
+- **Comparación A/B/C.** Cita los valores de `results/comparacion_variantes_2026-10-15/` (5.49, 2.07 y 1.78 s; 17.4 y 23.4 s; A probó 2/10 con promedio de 113.5 s que no es tiempo hasta el óptimo) y advierte que 2.07 s y 2.975 s no se mezclan.
+- **Referencias retiradas.** Sin menciones del repositorio de referencia en el texto, el XML ni las relaciones internas del DOCX, y sin el enlace editable de Google Docs. No se revisó el texto incrustado en las 15 imágenes.
+- **Anexo A.** Documenta `--modelo`, los estados del solver y la validación de demandas positivas; el docstring que cita sobre demandas nulas corresponde a llamadas directas a `construir_modelo`, no a lo que acepta el programa (`leer()` las rechaza).
+- **Figuras.** Las del repositorio se regeneran con `src/generar_figuras.py` desde los resultados del modelo B (el diagrama no muestra las restricciones de subrutas). Las del modelo A están en `figures/historicas/`.
+
+Pendientes que no son del código: acordar qué algoritmo es «el algoritmo desarrollado con anterioridad» (se conserva Clarke–Wright + 2-opt), y verificar la versión renderizada del informe y del README, que no se revisaron aquí.
