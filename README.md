@@ -71,9 +71,9 @@ Las figuras del modelo A (comparación con 10 970 ms y diagrama con las restricc
 
 | Documento | Estado |
 |---|---|
-| [`docs/Reto_CVRP_revisado.docx`](docs/Reto_CVRP_revisado.docx) | **Vigente** (revisión del 15 de octubre de 2026, modelo de arcos y carga). Copia de respaldo; la versión editable no se enlaza aquí. Usa el modelo B y su medición principal; conserva el modelo A como antecedente histórico y la comparación A/B/C. |
+| [`docs/Reto_CVRP_revisado.docx`](docs/Reto_CVRP_revisado.docx) | **Vigente**, revisión editorial del 16 de octubre de 2026. Presenta el modelo de flujo y su medición principal; define y compara A/B/C en la sección 7.2. |
 | [`archive/v1_modelo_particion_rutas/`](archive/v1_modelo_particion_rutas/) | Histórico: modelo anterior por partición de rutas, válido pero superado. |
-| Versión LaTeX | Pendiente de actualización y aprobación; **no incluida**. |
+| [Informe PDF](docs/Reto_CVRP_Etapa1.pdf) y [fuentes LaTeX](docs/latex/main.tex) | **Vigentes**, compilados y revisados en Prism. 19 páginas, 9 tablas y 5 figuras numeradas; portada conservada. Compilar `docs/latex/main.tex` dos veces con pdfLaTeX. |
 
 ## Reproducir
 

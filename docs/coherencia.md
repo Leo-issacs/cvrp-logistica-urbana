@@ -77,19 +77,15 @@ A partir de un diagnóstico externo, revisado también por el equipo del informe
 
 **Un experimento exploratorio previo tenía un defecto de protocolo:** su cronómetro terminaba antes de reconstruir las rutas, mientras que el tiempo histórico sí las incluye. Sus números no se versionan; la comparación del repositorio mide `build_s`, `solve_s` y `reconstruct_s`, y su total es el mismo tramo que el del script histórico.
 
-## 6. Sincronización con el informe vigente
+## 6. Informe vigente: revisión editorial del 16 de octubre de 2026
 
-El informe (`docs/Reto_CVRP_revisado.docx`, versión del 15 de octubre de 2026 posterior a la integración del modelo B) usa el modelo B como formulación principal y su medición como principal. Lo contrastado contra el repositorio:
+El informe presenta el modelo de arcos y flujo de producto como formulación principal. Las variantes A, B y C se definen y comparan en la sección 7.2; la bitácora de depuración queda en la documentación del repositorio.
 
-- **Modelo.** Describe B con 154 restricciones (155 con m = 3) y presenta A como antecedente con 1 013 restricciones explícitas y 1 167 restricciones.
-- **Tabla 8.** Los tiempos de las diez repeticiones coinciden con `results/medicion_modelo_B_2026-10-15/mediciones.csv` (3016.158 ms, 0.107 ms, 10680.474 ms, etc.).
-- **Tiempos y porcentajes.** 2.975 s y 0.198 ms, GAP de costo 6.352 % (base: óptimo), 5.973 % (base: distancia heurística, sección ambiental) y reducción de tiempo 99.9933 %, con la razón de tiempos de la medición de B.
-- **Tres rutas.** Atribuye 339.164674 al modelo B (10/10 corridas) y a la certificación por particiones; conserva el incumbente histórico del modelo A (361.000366, cota 299.712) como evidencia separada.
-- **Comparación A/B/C.** Cita los valores de `results/comparacion_variantes_2026-10-15/` (5.49, 2.07 y 1.78 s; 17.4 y 23.4 s; A probó 2/10 con promedio de 113.5 s que no es tiempo hasta el óptimo) y advierte que 2.07 s y 2.975 s no se mezclan.
-- **Referencias retiradas.** Sin menciones del repositorio de referencia en el texto, el XML ni las relaciones internas del DOCX, y sin el enlace editable de Google Docs. No se revisó el texto incrustado en las 15 imágenes.
-- **Anexo A.** Documenta `--modelo`, los estados del solver y la validación de demandas positivas; el docstring que cita sobre demandas nulas corresponde a llamadas directas a `construir_modelo`, no a lo que acepta el programa (`leer()` las rechaza).
-- **Figuras.** Las del repositorio se regeneran con `src/generar_figuras.py` desde los resultados del modelo B (el diagrama no muestra las restricciones de subrutas). Las del modelo A están en `figures/historicas/`.
+- Las nueve tablas conservan sus valores. La Tabla 8 corresponde a la medición principal del modelo B del 15 de octubre: tiempo medio exacto de 2.975 s, heurística de 0.198 ms y GAP de distancia de 6.352 %.
+- La solución de tres rutas conserva 339.164674, probado por CBC en las diez ejecuciones de la medición principal y confirmado por particiones.
+- El marco de costos se presenta formalmente y las cinco figuras incluyen interpretación. Se eliminaron aclaraciones defensivas y referencias a archivos históricos del cuerpo del informe.
+- Las funciones `construir_modelo`, `costo`, `dos_opt` y `heuristica` del Anexo A LaTeX coinciden con `src/`. No se modificaron código, instancia ni resultados.
+- La exportación de Google Docs conserva la portada original y no reincorpora el Anexo B. El PDF de LaTeX tiene 19 páginas; se revisaron numeración, referencias y maquetación. La portada se incorpora desde la página original, con el mismo contenido y disposición.
+- `docs/latex/main.tex` coincide por SHA-256 con la fuente descargada de Prism. El paquete de entrega contiene los ocho archivos requeridos y se verificó su integridad.
 
-**Cierre documental (15/10/2026).** Se adopta Clarke–Wright + 2-opt para esta entrega, coherente con el pseudocódigo, el Anexo A y las mediciones. Se sustituyó la Figura 1 por el diagrama del repositorio: sus píxeles coinciden tras la exportación a DOCX. Se revisó el README renderizado en GitHub y la exportación PDF del documento de Google Docs: conserva 19 páginas, la portada es idéntica y las nueve tablas no cambiaron. La comparación visual detecta cambios sólo en las páginas 8 y 9. No se generó LaTeX.
-
-La numeración (8) usada arriba para las restricciones explícitas pertenece al modelo A histórico. En el informe vigente, (8) identifica la contradicción que demuestra la conectividad del modelo B; no es una restricción adicional.
+En el PDF LaTeX, (4.8) es la contradicción que demuestra conectividad, no una restricción adicional. En el DOCX se conserva la numeración simple (8). Las referencias del diagrama están adaptadas a cada formato.

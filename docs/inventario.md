@@ -26,17 +26,21 @@ Rutas relativas al directorio de trabajo original (`work/…`, `outputs/…`), q
 | `figures/comparacion_B.png` | Generada con `src/generar_figuras.py` desde `results/medicion_modelo_B_2026-10-15/` (preparada también por Codex en `outputs/cvrp_modelo_B/`) | Distancia y tiempo medio, modelo B vs heurística | Figura vigente (2 975.4 ms). Visualmente equivalente a la preparada por Codex. |
 | `figures/diagrama_variables.png` | Generada con `src/generar_figuras.py` (modelo B) | Diagrama de variables y restricciones del modelo B | Usada también en la Figura 1 del informe vigente; píxeles idénticos en el DOCX exportado. El balance de producto excluye subrutas aisladas; las flechas no cruzan etiquetas. El diagrama de A permanece en `figures/historicas/`. |
 | `figures/historicas/comparacion_A.png`, `figures/historicas/diagrama_variables_A.png` | `work/cvrp_revision/assets/comparacion_actualizada.png` y `diagrama_variables.png` (regenerada) | Figuras históricas del modelo A (10 970 ms; diagrama con (8)) | Conservadas sin cambios, identificadas como históricas (`figures/historicas/LEEME.md`). |
-| `docs/Reto_CVRP_revisado.docx` | Exportación del Google Doc actualizado por Codex (15/10/2026, SHA-256 completo `bdf63e27c0f7439ef7c4f32cf2b28887e072eb9470b0595b21dc9bd88d44c247`) | Informe vigente | Modelo B y medición principal; A como antecedente y comparación A/B/C. Diagrama unificado y Clarke–Wright + 2-opt adoptado para la entrega. Sustituye a las exportaciones anteriores (`feeb88f45dda`, `41d18e96b679`, `585afafdb8c4`). 19 páginas; portada conservada; sin anexo B. |
+| `docs/Reto_CVRP_revisado.docx` | Exportación de Google Docs, 16/10/2026; SHA-256 `c3dacbae342b01b6a119535db46be0f2722ef892319f27001062704d2fdb495d` | Informe vigente | Revisión editorial: modelo principal de flujo, comparación A/B/C en 7.2, interpretación de figuras. Portada conservada; sin anexo B. |
 | `docs/metodologia.md, docs/coherencia.md, docs/inventario.md` | `— (nuevos)` | Documentación | Escritos para el repositorio. |
 | `archive/v1_modelo_particion_rutas/` | `work/cvrp/ (resolver_cvrp.py, resultados/, entrega/requirements.txt) + outputs/cvrp/Reto_CVRP_Etapa1.docx` | Antecedente: modelo por partición de rutas | Una sola copia (work/cvrp/entrega/ era un duplicado exacto). Es válido pero NO es el modelo vigente. |
 | `archive/v2_arcos_script_de_la_revision/resolver_cvrp_arcos_original.py` | `work/cvrp_revision/resolver_cvrp_arcos.py` | Script exacto que generó results/ | Trazabilidad: es el que acepta como óptimo un incumbente por límite de tiempo. |
+
+## Entrega LaTeX del 16 de octubre de 2026
+
+`docs/Reto_CVRP_Etapa1.pdf` contiene el informe compilado en Prism (19 páginas). `docs/latex/` contiene las ocho fuentes y recursos necesarios: `main.tex`, `LEEME.txt`, la portada original y cinco figuras. La portada se incorpora como PDF; ecuaciones, tablas y figuras del cuerpo tienen numeración automática. El diagrama LaTeX adapta las referencias a (4.1)–(4.9). Esta revisión no modifica código, datos ni mediciones.
 
 ## Huellas SHA-256 (datos, resultados, figuras e informe; los scripts y textos se normalizan a LF al confirmar y no se listan)
 
 | Archivo | SHA-256 (12) |
 |---|---|
 | `data/instancia.txt` | `a76ebd6059d7` |
-| `docs/Reto_CVRP_revisado.docx` | `bdf63e27c0f7` |
+| `docs/Reto_CVRP_revisado.docx` | `c3dacbae342b` |
 | `figures/comparacion_B.png` | `1fd72c0b14c5` |
 | `figures/diagrama_variables.png` | `a74224543448` |
 | `figures/historicas/comparacion_A.png` | `e39492bd4679` |
@@ -62,13 +66,20 @@ Rutas relativas al directorio de trabajo original (`work/…`, `outputs/…`), q
 | `results/medicion_modelo_B_2026-10-15/mediciones.csv` | `f4eb2311bf42` |
 | `results/comparacion_variantes_2026-10-15/resultados.json` | `04369e036cd4` |
 | `results/comparacion_variantes_2026-10-15/mediciones.csv` | `f956be9a7be2` |
+| `docs/Reto_CVRP_Etapa1.pdf` | `3d8eda2cf393` |
+| `docs/latex/portada_final.pdf` | `da78acaa3770` |
+| `docs/latex/figuras/comparacion.png` | `82cdbc0ef142` |
+| `docs/latex/figuras/diagrama.png` | `8283ef3fa88c` |
+| `docs/latex/figuras/rutas_exactas.png` | `432d93eab181` |
+| `docs/latex/figuras/rutas_heuristica.png` | `6628ca6f7b3c` |
+| `docs/latex/figuras/rutas_tres.png` | `fb43e0088efb` |
 
 ## Excluido y por qué
 
 | Material | Motivo |
 |---|---|
 | outputs/cvrp_revision/Respaldo_CVRP_revision.zip, outputs/cvrp/*.zip, outputs/cvrp_latex/*.zip, work/cvrp_latex/CVRP_Etapa_1.zip | Paquetes comprimidos que duplican archivos ya incluidos. |
-| work/cvrp_latex/, outputs/cvrp_latex/ (main.tex, Reto_CVRP_Etapa1.pdf, figuras, scripts de conversión, capturas) | La versión LaTeX está pendiente de actualización y aprobación; no se modificó ni se presenta como vigente. Sigue intacta en el directorio de origen. |
+| work/cvrp_latex/, outputs/cvrp_latex/ (main.tex, Reto_CVRP_Etapa1.pdf, figuras, scripts de conversión, capturas) | Versión LaTeX anterior, sustituida por docs/latex/ y el PDF vigente del 16/10/2026. Sigue intacta en el directorio de origen. |
 | work/cvrp/original.docx, original.pdf | Documento original de partida; está superado por el informe vigente. |
 | work/cvrp/revision.docx/.pdf, work/cvrp_latex/aprobado.*, work/cvrp_revision/antes.*, despues.* | Estados intermedios del informe; el vigente es la exportación corregida posterior del Google Doc. |
 | work/cvrp/render/, work/cvrp_revision/renders/, work/cvrp_latex/pagina-*.png, contacto-*.png, portada.png, cover.png | Renders y hojas de contacto de comprobación visual; artefactos regenerables. |

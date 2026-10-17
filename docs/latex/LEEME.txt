@@ -1,0 +1,6 @@
+CVRP de logística urbana — versión final del 16 de octubre de 2026.
+Compilar main.tex con pdfLaTeX dos veces.
+La portada conserva la página original de Google Docs.
+Las ecuaciones, tablas y figuras usan numeración y referencias automáticas.
+Los resultados proceden de las mediciones documentadas del 15 de octubre de 2026; esta revisión modifica la presentación, no los experimentos.
+Código y datos: https://github.com/Leo-issacs/cvrp-logistica-urbana
