@@ -1,4 +1,56 @@
-# CVRP de logística urbana: solución exacta frente a heurística
+# Reto CVRP de logística urbana: tres etapas
+
+Proyecto del curso *Diseño de algoritmos matemáticos bioinspirados* (MA2015, Gpo. 201). El reto consiste en resolver el problema de ruteo de vehículos con capacidad limitada (**CVRP**) con un modelo exacto y con heurísticas y metaheurísticas, y comparar costo y tiempo. Este repositorio reúne las **tres etapas** del reto.
+
+**Equipo:** Leonardo Orozco, Pablo Alonso Robles Nava, Sebastián Alberto Chávez Rodríguez, Jacqueline Peña San Juan y Natalia Ixchel Reynoso Ramírez.
+
+## Etapas
+
+| Etapa | Qué se hizo | Carpeta | Informe |
+|---|---|---|---|
+| 1 | Modelo exacto de arcos y carga (PuLP + CBC) frente a Clarke–Wright + 2-opt, en una instancia de 10 clientes | raíz: [`src/`](src/), [`data/`](data/README.md), [`results/`](results/), [`docs/`](docs/) | [`docs/Reto_CVRP_Etapa1.pdf`](docs/Reto_CVRP_Etapa1.pdf) |
+| 2 | Algoritmo genético (GA) y colonia de hormigas (ACO) con decodificador Split, en la instancia de 10 clientes | [`etapa2/`](etapa2/README.md) | [`etapa2/latex/main.tex`](etapa2/latex/main.tex) (fuente LaTeX; el repositorio no incluye un PDF compilado) |
+| 3 | Los cuatro métodos en 24 instancias CMT y X de CVRPLIB, diseño factorial de hiperparámetros y GAP contra el modelo y el BKS | [`etapa3/`](etapa3/README.md) | [`etapa3/docs/Etapa3_CVRP.pdf`](etapa3/docs/Etapa3_CVRP.pdf) |
+
+La Etapa 1 conserva su estructura original en la raíz (sus documentos dependen de esas rutas relativas); la Etapa 3 importa el modelo B de la Etapa 1 desde [`src/`](src/resolver_cvrp_arcos.py).
+
+## Resultado final
+
+GAP medio contra la mejor solución conocida (BKS), 24 instancias, 5 corridas por caso, mismo presupuesto de 50,000 soluciones evaluadas para GA y ACO:
+
+| Método | Configuración | GAP medio | Tiempo por corrida |
+|---|---|---:|---:|
+| Clarke–Wright + 2-opt | determinista | **7.10 %** | 1–91 ms |
+| Colonia de hormigas | α = 1, β = 5, ρ = 0.1 | 12.41 % (9.37 % con 2-opt final) | 3.0 s |
+| Algoritmo genético | OX de 1 punto, p_m = 0.2, torneo | 18.04 % (13.74 % con 2-opt final) | 0.9 s |
+
+- Clarke–Wright + 2-opt es el mejor en 21 de 24 instancias.
+- El modelo matemático prueba el óptimo hasta 30 clientes (subinstancias de CMT1, límite de 300 s). En ese rango, GA y ACO quedan a ~2 % del óptimo y Clarke–Wright a 4.7 %.
+- Diseño factorial: GA con 2 × 3 × 2 = 12 combinaciones (puntos de cruce, probabilidad de mutación, selección); ACO con 2 × 2 × 2 = 8 (α, β, ρ). Pruebas de Friedman y Wilcoxon sobre las 24 instancias.
+
+El detalle, las pruebas estadísticas y las limitaciones están en el [informe de la Etapa 3](etapa3/docs/Etapa3_CVRP.pdf) y en [`etapa3/README.md`](etapa3/README.md).
+
+## Cómo reproducir cada etapa
+
+Requiere Python 3.10+ (la Etapa 1 se comprobó con 3.12). Desde la raíz, en PowerShell:
+
+```powershell
+python -m pip install -r requirements.txt -r etapa3/requirements.txt
+
+python -m pytest -q tests                      # Etapa 1
+cd etapa2; python -m pytest -q tests; cd ..    # Etapa 2
+cd etapa3; python -m pytest -q tests; cd ..    # Etapa 3
+```
+
+- **Etapa 1:** sección siguiente de este documento ([Reproducir](#reproducir)).
+- **Etapa 2:** [`etapa2/README.md`](etapa2/README.md), sección «Cómo reproducir».
+- **Etapa 3:** [`etapa3/README.md`](etapa3/README.md), sección «Reproducir». Los experimentos completos tardan horas; los resultados ya están en [`etapa2/resultados/`](etapa2/resultados/) y [`etapa3/resultados/`](etapa3/resultados/).
+
+Atribuciones y fuentes de terceros: [`ATRIBUCIONES.md`](ATRIBUCIONES.md). Este repositorio **no declara licencia general**.
+
+---
+
+## Etapa 1: solución exacta frente a heurística
 
 Ruteo de vehículos con capacidad limitada (**CVRP**) para una instancia didáctica de **10 clientes y un depósito**. El repositorio resuelve el caso con un **modelo exacto de arcos binarios y carga física** (PuLP + CBC), lo contrasta con la heurística de **ahorros de Clarke–Wright + 2-opt** y reúne datos, resultados, figuras, código de verificación y el informe vigente.
 
@@ -6,7 +58,7 @@ Proyecto del curso *Diseño de algoritmos matemáticos bioinspirados*, Etapa 1. 
 
 ![Solución exacta: cuatro rutas desde el depósito](figures/rutas_exactas.png)
 
-## Resultado en breve
+### Resultado en breve
 
 Distancias y tiempos de la **medición nueva con el modelo B** (`results/medicion_modelo_B_2026-10-15/`, 10 repeticiones tras calentamiento, un solo equipo). Los óptimos certificados coinciden entre formulaciones; una corrida detenida por tiempo puede devolver una solución de mayor distancia:
 
@@ -28,11 +80,11 @@ Distancias y tiempos de la **medición nueva con el modelo B** (`results/medicio
 
 **Datos de la instancia:** capacidad por vehículo `Q = 50`; demanda total 146 → al menos `⌈146/50⌉ = 3` rutas. Distancia euclidiana **sin redondeo** (con distancias enteras tipo EUC_2D el óptimo es 317). El archivo no indica unidades físicas.
 
-## El problema
+### El problema
 
 Una flota homogénea sale de un depósito, entrega a cada cliente una sola vez sin superar la capacidad y regresa. Se minimiza la distancia recorrida; el número de rutas lo decide el modelo. Con tres rutas se puede atender a todos (carga libre global 2.7 %), pero recorren más que las cuatro rutas óptimas.
 
-## Método exacto frente a heurística
+### Método exacto frente a heurística
 
 El algoritmo adoptado para esta entrega es **Clarke–Wright + 2-opt dentro de cada ruta**. El pseudocódigo de la sección 5, el código del Anexo A y las mediciones del informe corresponden a este mismo procedimiento. Es una heurística clásica; los métodos bioinspirados se discuten como extensiones posteriores.
 
@@ -49,7 +101,7 @@ Hay tres variantes (`--modelo`): **B** (predeterminada), **A** (reproduce la evi
 
 Ecuaciones completas, por qué no hacen falta las subrutas, estados del solver y protocolo de medición: [`docs/metodologia.md`](docs/metodologia.md).
 
-## Rutas
+### Rutas
 
 **Óptima (exacta), 318.9895:**
 
@@ -67,7 +119,7 @@ Ecuaciones completas, por qué no hacen falta las subrutas, estados del solver y
 
 Las figuras del modelo A (comparación con 10 970 ms y diagrama con las restricciones de subrutas) se conservan, identificadas como históricas, en [`figures/historicas/`](figures/historicas/LEEME.md).
 
-## Informe vigente y versiones históricas
+### Informe vigente y versiones históricas
 
 | Documento | Estado |
 |---|---|
@@ -75,7 +127,7 @@ Las figuras del modelo A (comparación con 10 970 ms y diagrama con las restricc
 | [`archive/v1_modelo_particion_rutas/`](archive/v1_modelo_particion_rutas/) | Histórico: modelo anterior por partición de rutas, válido pero superado. |
 | [Informe PDF](docs/Reto_CVRP_Etapa1.pdf) y [fuentes LaTeX](docs/latex/main.tex) | **Vigentes**, compilados y revisados en Prism. 19 páginas, 9 tablas y 5 figuras numeradas; portada conservada. Compilar `docs/latex/main.tex` dos veces con pdfLaTeX. |
 
-## Reproducir
+### Reproducir
 
 Requiere Python 3.12 (otras versiones 3.10+ deberían funcionar, no se probaron). CBC viene incluido con PuLP.
 
@@ -119,7 +171,7 @@ Opciones de `resolver_cvrp_arcos.py`: `--modelo {A,B,C}` (B por defecto; `A` rep
 
 Salidas de cada ejecución: `resultados.json`, `mediciones.csv`, `matriz_costos.csv` y un registro `cbc_<caso>_<n>.log` por corrida. Para generar las figuras: `python src/generar_figuras.py <carpeta de resultados> --salida figures_local`.
 
-## Mapa de archivos
+### Mapa de archivos
 
 | Ruta | Contenido |
 |---|---|
@@ -140,7 +192,7 @@ Salidas de cada ejecución: `resultados.json`, `mediciones.csv`, `matriz_costos.
 
 Las fuentes de las tablas y figuras están en [`docs/inventario.md`](docs/inventario.md). Las mediciones principales del informe (Tabla 8, Tabla 9 y Figura 5) salen de `results/medicion_modelo_B_2026-10-15/mediciones.csv` (la Tabla 8 se contrastó con esa tabla) y la comparación A/B/C de `results/comparacion_variantes_2026-10-15/`. La evidencia del modelo A sigue en `results/`; su campo histórico `tres_rutas` contiene un incumbente de 361.0004 y no es fuente del óptimo de tres rutas (339.1647, certificado por particiones).
 
-## Estado de la verificación
+### Estado de la verificación
 
 **Comprobado** (ejecutado el 15 de octubre de 2026): `src/verificar_resultados.py` sobre `results/` (26 comprobaciones), `results/reproduccion_2026-10-15` (27), `results/medicion_modelo_B_2026-10-15` (38, sin avisos) y `results/comparacion_variantes_2026-10-15` (13, con 8 avisos: corridas del modelo A detenidas sin probar optimalidad); y las pruebas de `tests/`. Cada solución atiende a cada cliente una vez, respeta `Q = 50`, tiene distancias recomputadas desde la instancia y coincide con la certificación independiente por programación dinámica (318.9895 con cuatro rutas, 339.1647 con tres).
 
@@ -152,10 +204,10 @@ Las fuentes de las tablas y figuras están en [`docs/inventario.md`](docs/invent
 - No se ejecutó de nuevo el código del modelo anterior (`archive/`).
 - No hay integración continua ni insignias de pruebas.
 
-## Limitaciones
+### Limitaciones
 
 Una instancia pequeña y didáctica; sin unidades físicas, costos monetarios ni emisiones; el programa solo admite demandas de clientes estrictamente positivas (`leer()` rechaza las demás) y el modelo B depende de ello; ninguna formulación está pensada para instancias grandes; la razón de tiempos depende de la formulación, de CBC y del equipo.
 
-## Fuentes
+### Fuentes
 
 Clarke y Wright (1964), *Operations Research* 12(4); Gillett y Miller (1974); Prins (2004); Vidal (2022); Reinelt, TSPLIB; y las demás referencias del [informe](docs/Reto_CVRP_revisado.docx). Instancia y licencias: [`ATRIBUCIONES.md`](ATRIBUCIONES.md). Este repositorio **no declara licencia general**.
