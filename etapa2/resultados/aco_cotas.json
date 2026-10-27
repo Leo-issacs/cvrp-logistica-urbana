@@ -1,0 +1,50 @@
+{
+ "CVRP_10|r=0.0": {
+  "exitos": 30,
+  "n": 30,
+  "mediana_primera": 34.0,
+  "media_z": 318.98948674783003
+ },
+ "CVRP_10|r=0.01": {
+  "exitos": 30,
+  "n": 30,
+  "mediana_primera": 34.0,
+  "media_z": 318.98948674783003
+ },
+ "CVRP_10|r=0.05": {
+  "exitos": 30,
+  "n": 30,
+  "mediana_primera": 34.0,
+  "media_z": 318.98948674783003
+ },
+ "CVRP_10|r=0.1": {
+  "exitos": 30,
+  "n": 30,
+  "mediana_primera": 34.0,
+  "media_z": 318.98948674783003
+ },
+ "E10-b|r=0.0": {
+  "exitos": 16,
+  "n": 30,
+  "mediana_primera": 57.5,
+  "media_z": 495.29739216868194
+ },
+ "E10-b|r=0.01": {
+  "exitos": 19,
+  "n": 30,
+  "mediana_primera": 76,
+  "media_z": 493.4698025842691
+ },
+ "E10-b|r=0.05": {
+  "exitos": 25,
+  "n": 30,
+  "mediana_primera": 135,
+  "media_z": 492.8829123924493
+ },
+ "E10-b|r=0.1": {
+  "exitos": 26,
+  "n": 30,
+  "mediana_primera": 123.0,
+  "media_z": 492.87569944984864
+ }
+}

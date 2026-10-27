@@ -13,3 +13,12 @@ tmp/
 Thumbs.db
 # Nuevas ejecuciones locales (la evidencia versionada vive en results/ y results/reproduccion_*)
 results/local_*/
+
+# LaTeX y cache de numba
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.nbi
+*.nbc
