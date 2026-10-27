@@ -1,0 +1,6 @@
+numpy>=1.26
+numba>=0.60
+scipy>=1.11
+matplotlib>=3.8
+pulp==3.3.0
+pytest>=8
