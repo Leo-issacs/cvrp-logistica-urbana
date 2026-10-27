@@ -1,0 +1,26 @@
+{
+ "CVRP_10|alpha=0.0": {
+  "exitos": 30,
+  "n": 30,
+  "mediana_primera": 44.0,
+  "media_z": 318.9894867478301
+ },
+ "CVRP_10|alpha=1.0": {
+  "exitos": 30,
+  "n": 30,
+  "mediana_primera": 34.0,
+  "media_z": 318.9894867478301
+ },
+ "E10-b|alpha=0.0": {
+  "exitos": 30,
+  "n": 30,
+  "mediana_primera": 248.0,
+  "media_z": 492.8468476794459
+ },
+ "E10-b|alpha=1.0": {
+  "exitos": 16,
+  "n": 30,
+  "mediana_primera": 57.5,
+  "media_z": 495.29739216868194
+ }
+}
